@@ -3,14 +3,14 @@
 build:
     environment:
         php: 
-            version: 5.4.28
+            version: '5.4.28'
 
 filter:
     excluded_paths:
         - tests/*
 
 checks:
-php:
+    php:
         code_rating: true
         duplication: true
         variable_existence: true
@@ -44,5 +44,5 @@ php:
         spacing_around_conditional_operators: true
 
 filter:
-   excluded_paths:
-      - lib/pear/*
+    excluded_paths:
+        - lib/pear/*
