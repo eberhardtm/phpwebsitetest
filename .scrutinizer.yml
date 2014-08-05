@@ -45,4 +45,4 @@ checks:
 
 filter:
     excluded_paths:
-        - lib/pear/*
+        - lib/*
