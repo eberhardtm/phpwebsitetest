@@ -1,11 +1,11 @@
 # .scrutinizer.yml
 
 build:
-    environment:
-        php: '5.4.28'
+environment:
+php: '5.4.28'
 
 checks:
-    php:
+php:
         code_rating: true
         duplication: true
         variable_existence: true
@@ -39,5 +39,5 @@ checks:
         spacing_around_conditional_operators: true
 
 filter:
-	excluded_paths:
-		- lib/pear/*
+   excluded_paths:
+      - lib/pear/*
