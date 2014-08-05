@@ -1,0 +1,169 @@
+Version 1.2.0
+----------------------------------------------------------------
+20 November 2008
++ Fixed bug that didn't allow hub and branch to both have table
+  prefixing.
+
+19 November 2008
++ Fixed bug with database disconnect. Thanks Hilmar and Verdon.
++ Added ability to install on populated databases.
+
+23 September 2008
++ Copying the correct htaccess file source now.
+
+Version 1.1.6
+-----------------------------------------------------------------
+30 May 2008
++ Uses core's default htaccess file.
+
+Version 1.1.5
+-----------------------------------------------------------------
+10 March 2008
++ Added trim function to dsn parsing.
+
+27 February 2008
++ Fixed loadDSN : allows database passwords with spaces. Also checks
+  once for prefix to prevent having to scan whole config file.
+
+
+Version 1.1.4
+----------------------------------------------------------
+29 November 2007
++ Added text shortening on urls and directories.
+
+Version 1.1.3
+-----------------------------------------------------------
+27 September 2007
++ Added page limits and navigations to branch listing
++ Updated : templates/branch_list.tpl
+
+19 September 2007
++ Branch was missing a follow-thru if branch was unable to connect to
+  a specific database.
+
+Version 1.1.2
+-----------------------------------------------------------
+30 August 2007
++ Branch now gets its config.tpl from the core/inc directory.
+
+Version 1.1.1 -- 25 July 2007
+-----------------------------------------------------------
+12 July 2007
++ added table lock define to config.tpl
+
+27 June 2007
++ Removed compatibility mode from the config.tpl file
++ Updated file: templates/config.tpl
+
+Version 1.1.0
+-----------------------------------------------------------
+1 May 2007
++ Added a meta route to core module installation
+
+16 April 2007
++ Added FORCE_EDITOR define
+
+12 April 2007
++ Added local template caching define to config template 
++ updated files: templates/config.tpl
++ Branch now creates cache directory.
+
+4 April 2007
++ Changed to new language format.
+
+2 April 2007
++ removed image settings from default config template
+
+19 March 2007
++ Removed follow sym links from htaccess file.
+
+Version 1.0.5
+--------------------------------------------------------
+7 March 2007
++ Branch now copies htaccess file to branch site.
+
+6 March 2007
++ Trying different method of getting branch dsn.
+
+5 March 2007
++ Changed control panel icon
+
+Version 1.0.4
+---------------------------------------------------------
+19 February 2007
++ Reduced translate functions
+
+15 February 2007
++ Updated locale files.
++ Added translate functions.
+
+13 February 2007
++ Removed language setting from default config.php template
++ Raised core dependency
+
+8 December 2006
++ Added missing cache_directory value for config.tpl.
+
+Version 1.0.3
+----------------------------------------------------------
+16 November 2006
++ Fixed bug #1590935 - Copy admin directory to branch.
++ Changed the config file to not create a table prefix line if no
+  prefix exists.
++ Fixed bug that copying corrupt prefix data to the branch object.
++ Updated files : templates/config.tpl
++ Added captcha information to branch config template and removed
+  file types include.
+
+
+Version 1.0.2
+----------------------------------------------------------
+13 November 2006
++ Updated files : templates/config.tpl
++ Added captcha information to branch config template and removed
+  file types include.
+
+8 November 2006
++ Fixed bug #1590935 - Copy admin directory to branch.
++ Changed the config file to not create a table prefix line if no
+  prefix exists.
++ Fixed bug that copying corrupt prefix data to the branch object.
+
+
+Version 1.0.1
+----------------------------------------------------------
+31 October 2006
++ Removed error caused from Boost update if no Branches are present
+
+
+Version 1.0.0
+----------------------------------------------------------
+26 October 2006
++ Fixed directory references to extra slash.
+
+25 October 2006
++ Overhauled to allow table prefixing. Requires Database changes.
++ Fixed bug 1582406, use proper directory
+
+27 September 2006
++ Fixed Branch not copying javascript directory over
++ Branch now checks for writability of directory before trying to copy (Bug #1552259).
++ Changed defines to lower case.
++ Added permission file and changed update to register to Users (Bug #1544082).
+
+7 July 2006
++ Hopefully patched up problems with a Windows installation
++ Removed earlier Branch installation check since branch will not be
+  installed on the branch site.
++ Updated configuration file template to match setup's
++ Fixed Branch uninstall not removing all tables.
++ Branch removal now available.
++ A link now appears to set the allowed modules to a newly created
+  branch.
+
+6 July 2006
++ Disconnect added before testing branch connections
+
+30 June 2006
++ Core can call branch even if not installed. Added check to disallow
+  continuation 

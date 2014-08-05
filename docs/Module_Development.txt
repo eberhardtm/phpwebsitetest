@@ -1,0 +1,1465 @@
+Writing Modules for phpWebSite
+by Matthew McNaney
+
+-----------------------------------------------------------------------
+I.   Introduction
+
+II.  Programming
+   A. Programming Style
+     1. Classes
+     2. Sessions
+   B. Debug
+   C. Database Interaction
+     1. Format
+     2. loadObject and saveObject
+   D. Text
+     1. Input
+     2. Output
+     3. Links
+     4. User text
+   E. Language
+   F. Templating
+   G. Error Handling
+   H. Security
+
+III. Installation
+   A. Modules
+   B. Directories
+   C. Boost
+     1. Boost File
+     2. SQL import
+     3. Install file
+     4. Registering
+   D. Permissions
+   E. Control Panel
+     1. Links
+     2. Tabs
+   F. Dependencies
+   G. Installing
+
+IV. Run Process
+   A. The index.php file
+   B. The Inc Files
+     1. init.php
+     2. runtime.php
+     3. close.php
+
+V.  Administrating
+   A. Permissions
+   B. Control Panel
+   C. Settings
+   D. Form Class
+   E. Files
+     1. Images
+     2. Files
+   F. DBPager
+   G. Mini Admin
+
+VI.   Users and Layouts
+   A. Layout
+   B. Javascript
+   C. Key Flag
+   D. Caching
+
+VII.  Uninstallation
+
+VIII. Advanced and Miscellaneous
+   A. Approval
+   B. Versioning
+   C. Cookies
+   D. SmartTags
+
+----------------------------------------------------------------------
+
+I. Introduction
+______________________________________________________________________
+
+PhpWebSite has come a long way since it was a phpNuke fork. In 0.8.x
+it became modular. With 0.x it was rewritten from the ground up and
+to become more of a platform for web programs.
+
+Now that we approach the release of 1.x, phpWebSite is going through
+another metamorphosis. There are new tools and techniques to create a
+module. This document will attempt to take you through this process.
+
+Please note that the original version of this document was written
+during the alpha stages of 1.0.0. We are much closer to release
+now. Originally started two years ago, much has changed since. I have
+rewritten this document to reflect these changes.
+
+Quick note: whenever I refer to an "item", I am expressing shorthand
+for any type of content in your module. A blog entry, calendar event,
+house listing, comment, etc. are "items".
+
+
+II.  Programming
+______________________________________________________________________
+
+Every one codes differently. When I started writing phpws, PHP itself
+was in version 4. As we get close to our release, PHP 5 installations
+are more frequent. PHP's current class structure is much different.
+More talented programmers are bound to scoff at my coding
+technique. That's ok. It just happens to be the way I learned. I hope
+to develop along with my code. Keeping that mind, feel free to deviate
+from my coding samples. You may want to copy my code to get started
+but develop your own technique.
+
+
+A. Programming style
+----------------------------------------------------------------------
+
+1. Classes
+......................................................................
+
+phpWebSite 1.0 is almost entirely class based. If you are not familiar
+with Object Oriented Programming, you may have problems from here
+on. I would suggest reading some OOP documentation and code some
+examples. Let me repeat the warning from above: my OOP coding may vary
+wildly from "the standard" however it works for me. Use coding methods
+you find comfortable.
+
+You will find that many of the core classes use static calls. Others
+depend on a constructed object. I suggest that if you have a simple
+function that other modules could use to make it a static call. I like
+static calls because they are easier to remember. A more complex class
+may require a constructed object.
+
+For example, PHPWS_Text has two functions (which I will cover in a
+bit) that parse input and output text.
+
+$text = PHPWS_Text::parseInput($input);
+echo PHPWS_Text::parseOuput($text);
+
+Simple. The database class has a static call as well:
+
+PHPWS_DB::query('SELECT id from mytable');
+
+You will tend, however, to contruct a database object most of the time
+because of its complexity:
+
+$db = & new PHPWS_DB('table_name');
+$db->addWhere('column_name', 'foo');
+$db->loadObject($object);
+
+
+2. Sessions
+......................................................................
+Sessions can be very helpful. They prevent redundant object
+construction, relay information without forms, links, or cookies, and
+generally simplify coding. That said, avoid them when possible.
+
+In phpWebSite 0.10.x and under, we couldn't get enough of sessions. We
+also tended to overuse them. This caused memory bloat and required
+constant vigilance of values. In phpWebSite 1.0, we try and use them
+sparingly. You should as well.
+
+I would also recommend avoiding sessioned objects. Although it isn't
+hard to make sure their class is included before a session creation
+(which is required), it can tend to be a pain.
+
+
+B. Debug
+----------------------------------------------------------------------
+
+Those familiar with 0.10.x may remember the good ole testArray and
+testObject function:
+
+echo phpws_debug::testarray($some_array);
+echo phpws_debug::testobject($some_object);
+
+These still exist in phpWebSite 1.0, but they have been combined to
+just "test":
+
+test($some_array);
+test($some_object);
+test($some_string);
+
+Notice you don't need to add echo.
+
+The "test" function will recognize the type of variable passed to it
+and behave appropiately. test() will change html tags to readable to
+special characters for readability.
+
+test() accepts two extra parameters. The second parameter tells test()
+to exit after echoing the result, like so:
+
+test($some_array, true);
+
+Normally, test ignores redundant arrays and objects. You may bypass
+this by entering 'true' in the third parameter:
+
+test($some_array, true, true);
+
+Beware. Allowing recursive printing could cause a memory overflow:
+
+$foo = new Foo;
+$bar = new Bar;
+
+$bar->foo = &$foo;
+$foo->bar = &$bar;
+
+test($foo, false, false); // Expect a crash!
+
+
+C. Database Interaction
+----------------------------------------------------------------------
+phpWebSite uses the PEAR Database class. This library allows multiple
+database type (MySQL, Postgresql, Oracle, etc.)
+interaction. phpWebSite also uses its own special database class named
+PHPWS_DB. This class handles the connection and most basic queries. You
+should familiarize yourself with it by reading the Database_Class.txt
+file in the docs directory.
+
+
+1. Format
+......................................................................
+Since you want your module to work independent from the database
+platform, you should construct your queries carefully. Great effort
+was put into the PHPWS_DB class to allow it to conform to separate
+platforms. When possible, you should use it instead of constructing
+your own queries. Also, security measures in PHPWS_DB class try to
+prevent database hijacking.
+
+
+2. loadObject and saveObject
+......................................................................
+Two very useful functions to note are loadObject and saveObject.
+When you create an item class, your variable names should mirror the
+column names.
+
+For example, this class:
+
+class foo {
+ var $id    = 0;
+ var $title = null;
+}
+
+Should have a table like so:
+
+CREATE TABLE foo {
+id INT NOT NULL,
+title VARCHAR(255),
+primary key ('id')
+};
+
+If you sync the variables and columns, loadObject and saveObject will
+simplify your life. Here is how you can easily load an object from the
+database. First I create the constructor function for "foo".
+
+
+class foo {
+ var $id    = 0;
+ var $title = null;
+
+  function foo($id=0) {
+     if ($id) {
+         $db = & new PHPWS_DB('foo_table'); // the foo table
+
+         $this->id = (int)$id; // id exists, set the id
+
+         $db->loadObject($this);
+     }
+  }
+}
+
+Now I can create my object.
+
+$foo = & new foo(5);
+
+The constructor will set the id, pull that row from table, and set the
+variables for that object (just title in this example).
+
+Now I can change the object and save the results with saveObject.
+
+$foo->title = 'Better title';
+
+$db = & new PHPWS_DB('foo_table');
+$db->saveObject($foo);
+
+
+These two functions are the foundation of your item class.
+
+
+D. Text
+
+It should go without saying that a majority of the information we will
+be working with is text inputted by the user and text outputted by the
+software. The amount of text tends to create issues and problems. How
+do we save the text? How is the text displayed? How can we be sure the
+text is safe? Which html tags will we allow? 
+
+phpWebSite has a special text class to assist you with these issues.
+
+
+1. Input
+......................................................................
+All input needs to be secured before going into the
+database. Although the database class tries to prevent malacious
+actions, it is best to parse the text before saving it.
+
+Use parseInput before setting your object's text variables. I usually
+use something like the following example:
+
+$foo->setSummary($_POST['summary');
+
+class foo {
+....
+
+function setSummary($summary) {
+    $this->summary = PHPWS_Text::parseInput($summary);
+}
+
+parseInput will encode all the html tags, remove problematic Windows
+characters, and change local web address to relative links.
+
+Now the information contained in $foo->summary is ready to be saved.
+
+
+2. Output
+......................................................................
+Now we need to display our text. We can use parseOutput.
+
+echo $foo->getSummary();
+
+function getSummary()
+{
+   return PHPWS_Text::parseOutput($this->summary);
+}
+
+parseOutput does more work than parseInput. It will:
+1) Decode the html characters (encoded previously in parseInput)
+2) change bbcode into html tags
+3) remove profanity
+4) strip tags we don't wish to allow
+5) properly replace newline breaks with html breaks
+6) translate various symbols into XHTML acceptable coding
+
+
+
+3. Links
+......................................................................
+There are a handful of functions in the Text class that can assist you
+with html links. Although permanent links are easier to type out, you
+may find these functions help with the dynamic ones.
+
+
+PHPWS_Text::moduleLink($subject, $module, $variables,
+                       $target, $title);
+
+moduleLink creates a phpWebSite relative link. For example:
+
+$party_vars['city'] = 'Boone';
+$party_vars['house_id'] = 5;
+
+PHPWS_Text::moduleLink('Party at Jay\'s house', 
+                       'party_mod',
+                       $party_vars,
+                       'blank',
+                       'Directions to Jay\'s');
+
+The above will create:
+
+<a 
+href="index.php?module=party_mod&amp;city=Boone&amp;house_id=5"
+title="Directions to Jay's" target="_blank">
+Party at Jay's house
+</a>
+
+The target and title variables are optional.
+
+
+Sometimes you may want to create a more secure link. secureLink does
+this for you. It works exactly like moduleLink except it adds an
+authorization key to the end of the link.
+
+PHPWS_Text::secureLink($subject, $module, $variables, $target, $title);
+
+The authorization key works with the permissioning system in
+phpWebSite. It makes sure the person arriving at an administrative
+option is actually coming from the site and is logged in.
+
+Here is another example. Let's say that someone was able to create a
+bogus link somewhere on your site to exploit a weakness in the
+software:
+
+<img src="index.php?module=users&make_user_admin=6" />
+
+Now if user number 6 went to that address, nothing would happen
+because they don't have that priviledge. However, when you, an admin,
+log on, that image tag could send a command to the user module to make
+user 6 an admin. Since YOU had permissions, it would get through.
+
+With the authorization key, the above would fail because the security
+check would be expecting it. Since the hacker can't foresee what your
+authorization code will be the moment you log on, they have little
+chance of guessing the code.
+
+
+If you want to use a link like the above but want the href information
+only, you can use linkAddress:
+
+PHPWS_Text::linkAddress($module, $variables, $secure,
+                        $add_base, $convert_amp);
+
+The first two parameters should be familiar. The last three are
+optional, If "secure" is true, the authorization key will be added to
+the link. If "add_base" is true, the full site address will be
+prefixed to the address (i.e. http:://mysite.com/index.php... etc.).
+Finally, if "convert_amp" is true, all the ampersands will be
+converted into XHTML appropiate &amp;. You may want to set this to
+false if you are using a header.
+
+
+Finally, if you want to use short links via mod_rewrite, you can use
+the rewriteLink function:
+
+PHPWS_Text::rewriteLink($subject, $module, $id, $page);
+
+Example:
+
+echo PHPWS_Text::rewriteLink('Read more', 'newspaper', 6, 2);
+
+The above would print:
+
+<a href="/newspaper/6/2">Read more</a>
+
+If not using Apache or mod_rewrite is disabled, you will get a normal
+link.
+
+<a href="index.php?module=newspaper&id=6&page=2">Read more</a>
+
+Please familiarize yourself with mod_rewrite and .htaccess file
+formatting before using the above.
+
+
+4. User text
+......................................................................
+Some final notes before leaving the text discussion. Don't ever trust
+user input ESPECIALLY anonymous input. Comments, for example, strips
+all tags from user input. If they aren't using bb encoding, they don't
+get to format the text. This is for your own safety.
+
+As careful as I have been, I am SURE that somewhere I have left a
+variable open that can be exploited. It is inevitable. Get in the
+habit of testing all user data. Cast data types. Strip tags. Don't
+allow file uploads. If you allow any of the above, parse the mess out
+of it.
+
+Testing text doesn't stop at form entry either. Parse cookies. Expect
+someone to try and hack any input into the system.
+
+
+E. Language
+----------------------------------------------------------------------
+phpWebSite 1.0 uses the gettext method of language translation. There
+are several benefits using gettext over the old method. First, there
+isn't an extra language session taking up memory. Second, it is easier
+to develop code around it. Third, editing the files is simple and
+there are many client programs that perform this function.
+
+The downside is that gettext must be compiled on the machine. This
+isn't that much of a problem on most Linux machines but may cause a
+problem with custom builds or Windows servers.
+
+Translating static text in your module is easy:
+
+_('Translate this text');
+
+Surround your text with underline, left then right parenthesis. The
+underline is short for gettext();
+
+When you have dynamic content in your translation, use printf or
+sprintf like so:
+
+printf(_('Good morning %s, how are you?'), 'Ted');
+
+This way the translator can move the "%s" around.
+
+You can learn more about gettext and translation in the
+docs/Language.txt file.
+
+
+
+F. Templating
+----------------------------------------------------------------------
+Whenever possible, you should avoid putting html mark up in your
+code. Layout and style should be governed by template files.
+
+Template files are typically html encoded files containing special
+content tags. You can insert content into these content tags using the
+PHPWS_Template class.
+
+Example:
+
+The template - greeting.tpl
+----------------------------
+
+<h1>{GREETING}</h1>
+<p>{INFORMATION}</p>
+
+
+
+The code:
+----------------------------
+$template['INFORMATION'] = 'We hope you are well';
+
+$template['GREETING'] = sprintf(_('Good morning %s, how are you?'),
+                                'Ted');
+
+echo PHPWS_Template::process($template, 'my_module', 'greeting.tpl');
+
+
+The result:
+----------------------------
+<h1>Good morning Ted, how are you</h1>
+<p>We hope you are well</p>
+
+
+This is just the basics of templating. Make sure to read
+docs/template.txt for more information.
+
+
+
+G. Error Handling
+----------------------------------------------------------------------
+Stuff happens (keeping this G rated y'all). Sometimes things go wrong
+in your module or in others. phpWebSite uses PEAR's error class for
+problem identification.
+
+PEAR's error class constructs an error object. These objects are easy
+to identify with "isError".
+
+$result = getError();
+
+if (PEAR::isError($result)) {
+   exit('An error occurred');
+}
+
+Rarely will you just exit however. Instead you need to report the
+error to the user and the site administrator.
+
+The PHPWS_Error class extends the PEAR error class. You can use this
+class to create your own error object.
+
+For example, say you have a function that takes an id greater than
+zero. If the id is zero, then something went wrong. We would use the
+"get" function.
+
+function load($id, $name_of_req) {
+     if ($id) {
+         loadItem($id, $name_of_req);
+     } else {
+         return PHPWS_Error::get(ERROR_CODE, 'my_module', 'load',
+                                 $name_of_req);
+     }
+}
+
+
+In the above example, an error object is returned with these
+variables:
+
+ERROR_CODE   - A predefined number indicating the problem
+my_module    - The module the error occurred in
+load         - The name of the function the error occurred in
+$name_of_req - This is extra information. In this case, the name of the
+               user that requested the load. This parameter is
+               optional.
+
+The ERROR_CODE is established earlier. I usually create a file named
+error_defines.php and include it when the module starts.
+
+
+inc/error_defines.php
+
+<?php
+
+    define('ERROR_CODE', -1);
+   
+?>
+
+
+The ERROR_CODE corresponds to a message set in my conf/error.php file:
+
+conf/error.php
+
+<?php
+
+    $errors = array(ERROR_CODE, _('Received a zero id.'));
+   
+?>
+
+The error class will look for the error.php file to get the proper
+message. The errors can be defined where ever you wish EXCEPT in the
+error.php file itself. The error.php may be called more than once and
+you can't have a repeating define function.
+
+Once you have an error object, you can print the message:
+
+echo $error->printError();
+
+You can also use the PEAR functions getUserInfo and getMessage.
+
+If the error message doesn't need to be seen by the user, you can
+simply log it:
+
+PHPWS_Error::log(ERROR_CODE, 'my_module', 'load', $name_of_req);
+
+If you received the error object from another source, you can log it
+directly:
+
+PHPWS_Error::log($error_object);
+
+These errors are written to your logs/error.log file.
+
+
+What is great about error objects is the ability to pass them up. For
+example look at the below.
+
+function foo()
+{
+        $bar = bar();
+        if (PEAR::isError($result)) {
+           return $result;
+        } else {
+           process_something($result);
+           return true;
+        }
+}
+
+function bar()
+{
+        $result = load_something();
+        if (PEAR::isError($result)) {
+           return $result;
+        } else {
+           return true;
+        }
+        
+}
+
+$result = foo();
+if (PEAR::isError($result)) {
+     PHPWS_Error::log($result);
+     echo 'Something is broken.';
+} else {
+     echo 'something loaded and processed successfully!';
+}
+
+
+In this case, the error could start in bar(), pass up to foo(), then
+get passed to the result variable. We can then log the error and give
+the user a useful (or not so useful as in this example) message.
+
+If something goes REALLY bad, you can also use the default error page:
+
+PHPWS_Core::errorPage();
+
+This just prints a simple html page that indicates something went
+quite wrong. The script then exits. You may see it if your database
+goes down or a file goes missing.
+
+
+
+H. Security
+----------------------------------------------------------------------
+Some final warnings before leaving this chapter.
+
+1) Parse all text coming in from post and get arrays.
+2) Parse all text coming from a cookie.
+3) Check variable types. Cast integers.
+4) For each php file you create, prevent any action from direct
+   access. In other words, don't let a hacker browse directly to that
+   file and run your script.
+5) Use authorization keys on any command that alters the database.
+
+
+
+III. Installation
+______________________________________________________________________
+
+
+   A. Modules
+----------------------------------------------------------------------
+When phpWebSite is accessed, the core loads all the currently
+installed modules. You can, however, access an uninstalled module.
+
+If we have a module named "foo" in the mod/foo directory and it has an
+index.php file, we can access it via phpwebsite like so:
+
+phpwebsite.com/index.php?module=foo
+
+Instructions contained in index.php will be executed within the
+phpWebSite shell.
+
+You should only try this for simple modules. A more complex module
+benefits from the Boost module's upgrade capabilities. 
+
+
+   B. Directories
+----------------------------------------------------------------------
+Decide on your module's function. Once you know what your module
+"does", think of a simple one or two word description for it. This
+will be your "module title". Now come up with a full name for it. This
+is the module's "proper name." For example, if I create a guestbook
+module, I may give it a module title of simply "guestbook" and a
+proper name of "Matt's Rockin' Guest Book."
+
+Now we need to create the module's directories. I will use the "Blog"
+module (module title : blog) for our examples.
+
+phpwebsite/mod/blog/
+Our basic directory. It is important that the directory name is the
+same as the module title.
+
+The rest of the directories will be placed in the above directory.
+
+boost/
+This directory contains information on how to install, update, and
+uninstall your module.
+
+class/
+The location of your module's class files.
+
+
+conf/
+This is where your configuration files are placed. These will be
+copied to the phpwebsite/config/blog/ directory upon
+installation. These are copied so branches can each have
+their own config file if they need it. Put files here that may be
+edited by a site administrator.
+
+docs/
+This is where we would put documentation on our module.
+
+img/
+Any images that are specific to our module need to go here. They will
+be copied to images/mod/blog/ when the module is installed.
+
+inc/
+Another important directory. This directory contains your modules
+start up and close down files. It also can contain important files
+that 1) remain in the hub directory and 2) should not be altered by a
+site administrator.
+
+lang/
+Contains your gettext file translations. More about this later.
+
+templates/
+Contains your template files. These will be copied to
+templates/mod/blog/ on install.
+
+Once your directories have been created, you can begin adding your
+installation files.
+
+
+
+C. Boost
+----------------------------------------------------------------------
+The Boost module controls the installation, update, and uninstallation
+of all other modules in phpWebSite. Any information pertinent to the
+above are stored in the boost/ directory.
+
+
+1. Boost File
+......................................................................
+
+The most important boost file is named, aptly, boost.php. It relates
+all install, update, and uninstall information to the Boost module
+with just a handful of variables.
+
+Here is a list of variables used in the boost.php file.
+
+proper_name
+-----------
+This is the proper name of the module. The blog module's proper name
+is simply "Blog." 
+
+version
+-------
+This number tracks the development of our module. The format is
+1.2.3. Minor fixes increment the last number (3). Large fixes
+increment the second number (2). Major upgrades of a program increment
+the first number (1). As of this writing, Blog is at version 0.2.6.
+
+
+register
+--------
+If our module needs to perform an action when other modules are
+installed, this variable is set to TRUE. Blog doesn't require any
+external registration so it is set to FALSE.
+
+
+unregister
+----------
+If our module needs to perform an action when other modules are
+uninstalled, then this is set to TRUE. Usually, if a module registers
+other modules, it will need to unregister those modules as well.
+
+There are cases when a module does not register other modules but does
+need to unregister them. Layout, for example, does not register
+modules on installation but when a module is uninstalled, Layout drops
+all the display properties of that module. These properties were
+established during the runtime of that module, not during the
+installation.
+
+
+import_sql
+----------
+If this is set to TRUE, boost will look for a install.sql file. Blog
+uses this.
+
+
+image_dir
+---------
+If this module uses user submitted images, you would set this to
+TRUE. Boost will create an images/module_title directory for storage
+of the images.
+
+Don't confuse this with images used by the module internally
+(i.e. admin icons, buttons, etc.). Blog sets this to true.
+
+
+file_dir
+--------
+If your module needs a directory to save files to, change this to
+TRUE. Most of the time, this will be FALSE, as it is for Blog.
+
+
+about
+-----
+If TRUE, then this module has an About file (named about.html) in the
+boost directory. The About file informs the admin who wrote the
+module, where the module is hosted on the web, and other errata. Blog
+has a brief about file so it is set to TRUE.
+
+
+version_http
+------------
+You may want to keep a xml file somewhere that lets the user know if
+they can get an updated copy. This variable stores the web address to
+that file. Blog uses this as well.
+
+priority
+--------
+Most of the time, you can leave this alone. Priority determines the
+order that modules are loaded for execution. For some modules, like
+users and layout, it is very important they load first. The default
+value is 50 but you can leave it blank. We will fill it in just for
+instructional purposes.
+
+
+dependency
+----------
+If your module is dependent on other modules to function, you should
+set this to TRUE. We'll cover your dependency file in a little while.
+
+
+So here is our boost.php file from Blog :
+
+<?php
+
+$proper_name  = 'Blog';
+$version      = '0.2.6';
+$register     = FALSE;
+$unregister   = FALSE;
+$import_sql   = TRUE;
+$image_dir    = TRUE;
+$file_dir     = FALSE;
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/blog/check.xml';
+$about        = TRUE;
+$priority     = 50;
+$dependency   = TRUE;
+?>
+
+
+2. SQL Import
+......................................................................
+
+If your module uses the database, you will need to import its tables
+during installation. Including a install.sql file is the simpliest way
+to do so. Here is Blog's install.sql file.
+
+CREATE TABLE blog_entries (
+id INT NOT NULL,
+key_id INT NOT NULL,
+title VARCHAR( 60 ) NOT NULL ,
+summary TEXT NULL,
+entry TEXT NOT NULL,
+author_id INT NOT NULL default '0',
+author varchar(50) NOT NULL default '',
+create_date INT NOT NULL ,
+allow_comments SMALLINT NOT NULL default '0',
+approved INT NOT NULL default '0',
+allow_anon SMALLINT NOT NULL default '0',
+PRIMARY KEY ( id )
+);
+
+CREATE INDEX blogentries_idx on blog_entries(key_id);
+
+When forming or exporting your module's SQL file, keep compatibility
+in mind. Remove any database system-specific commands. Also, only use
+lengths on character fields. INT(11) is an acceptable MySQL entry but
+one that will cause problems in other database systems.
+
+Make sure to create indexes outside of the table declaration. Please
+note the index's name format: contracted table name + underline +
+idx. This is phpWebSite's database class's default format.
+
+
+3. Install file
+......................................................................
+
+An install file is not necessary. Many times, you just need an
+install.sql file to import your module's tables. That said, there may
+be times when you need to perform other actions outside of the sql
+import. Perhaps you need to create some special directories. Maybe you
+need some information from the site administrator before the
+installation can complete. An install file can assist with such
+actions.
+
+We will be looking at Layout's install.php (look in:
+mod/layout/boost/) file as an example.
+
+First notice the function name "layout_install." You must have a
+function composed of your module's title, plus an underline, plus the
+word "install."
+
+Your function should take two parameters. The first parameter is a
+reference to Boost's content array variable. The second parameter is a
+boolean variable alerting you to the type of module installation; in a
+hub or in a branch.
+
+Let's have a quick run through this file. Layout uses the install.php
+file to determine your site's name and which theme you wish to
+use. 
+
+There are two parts to the install file. One part prints a form to
+gather the above information. Notice that form content is added to the
+$content array: 
+
+$content[] = PHPWS_Template::process($template, 'layout',
+                                     'setup.tpl');
+
+Remember, Boost implodes this array and prints the information within.
+
+After the form is created, the install function returns FALSE. This
+tells Boost that we aren't done yet.
+
+The second part of Layout's install function error checks form
+data. If satisfied, the install function saves the data and returns
+TRUE. This tells Boost we are done. If the data is in error, the
+function displays an error message and runs the form again. Since we
+still are not finished, FALSE is returned again.
+
+Boost will continue to run this file until it receives a TRUE OR an
+error object. If it receives an error object, the installation will
+fail and you will be able to return to the Boost module.
+
+
+4. Registering
+......................................................................
+
+If your module needs to interact with other modules when they are
+installed, you need to create a register.php file in the  module's
+boost directory. When the module is installed, Boost registers the
+module in three ways:
+1) The module is registered to other modules.
+2) The other modules are registered to it.
+3) The module is registered to itself.
+
+Let's use Control Panel as an example.
+
+1) Control Panel is registered to other modules. The Users module
+   registers its permissions for example.
+
+2) Other modules are registered to Control Panel. Boost goes through
+   runs every module currently installed against the Control Panel's
+   register file. Control Panel looks at each module to see if it has
+   a controlpanel.php file. If so, it creates the tabs and links
+   requested by the module.
+
+3) Control Panel registers itself. It looks in its own directory for a
+   controlpanel.php file and creates the tabs and links specified.
+
+
+Take a look at Control Panel's register.php file. It contains a
+function similar in construction to the install.php function. The
+function should contain the module title, plus an underline, followed
+by the word "register.".
+
+The register function will contain two variables. The first variable
+is the title of the module getting registered. Like the install.php
+function, the second variable is the referenced content
+variable. Anything we want to print in Boost is piped into it.
+
+If you wish, you can follow the logic in
+PHPWS_ControlPanel::registerModule method. Basically it performs the
+actions we went over previously in the Control Panel setup. Like
+install.php, Boost expects one of three results, true, false, or an
+error. If true, the registration was successful. If false, the
+registration was not completed. This is an appropriate response
+because the module may not need registering. The final response would
+be an error object. If such is returned, it is logged and Boost gives
+a warning. The module will still install.
+
+
+D. Permissions
+----------------------------------------------------------------------
+
+I will touch on permissioning here. A more detailed account can
+(eventually not finished writing it yet) be found in
+docs/Permission.txt. Checking for permissions is handled in part V.
+
+There are five types of users:
+
+anonymous    - this user isn't logged in to the system
+
+logged       - this user is logged in, but doesn't have any
+               administrative permissions
+
+restricted   - this user is logged in and has restricted admin
+               privileges. These users can edit items but their
+               changes are subject to approval
+
+unrestricted - logged in user with full permissions in one module or
+               more. Their changes are not subject to approval
+
+deity        - an all-powerful logged in user. They have access to any
+               module, can view any item, and often use some
+               administrative functions or modules that mere mortals
+               are not allowed to touch.
+
+
+Before you start adding permissions to your module, you need to create
+a permission configuration file.
+
+The permission.php file is saved in your module's boost directory. If
+you only want your module to have all or nothing permissions. Just
+add:
+
+$user_permissions = true;
+
+and save the permission file. This indicates you not be using
+sub-permissions (explained in a second) or item permissions. The only
+to administrative options would be no permissions and all permissions.
+
+You may also include sub-permissions for your modules. For example,
+say you wanted to specify the administrators who may delete items from
+your module. Add a subpermission like so:
+
+$permissions['delete'] = _('Delete item')
+
+Finally, you may narrow down permissions to specific items. Just set:
+
+$item_permissions = true;
+
+Let's look at what a completed permissions file would look like:
+
+<?php
+$use_permissions = TRUE;
+
+$permissions['edit_items']   = _('Edit items');
+$permissions['delete_items'] = _('Delete items');
+
+$item_permissions = TRUE;
+?>
+
+Users would read this file and know,
+1) the module wants to use permissioning
+2) it will use subpermissions for editing and deleting and
+3) it will allow the admin to set item permissions.
+
+Your permissioning file will be registered by Users upon installation.
+
+
+E. Control Panel
+----------------------------------------------------------------------
+
+If your module has administrative settings, you will need a way for
+the site operator to get started. This is where the Control Panel
+module comes in.
+
+To get your module's icon on one of the Control Panel tabs, you need
+to create a controlpanel.php file in your boost directory.
+
+I will show the User's controlpanel.php file as an example:
+
+$tabs[] = array('title' => _('My Page'),
+		'label' => 'my_page',
+		'link'  => 'index.php?module=users&amp;action=user',
+		);
+
+$link[] = array('label'       => _('User Administration'),
+		'restricted'  => TRUE,
+		'url'         => 'index.php?module=users&amp;action=admin',
+		'description' => _('Lets you create and edit users and groups.'),
+		'image'       => 'users.png',
+		'tab'         => 'admin'
+		);
+
+I'll come back to the tabs array in a moment. Take a look at the link
+array.
+
+1. Links
+.....................................................................
+
+Although there is only one administrator link for users,
+control panel allows extras. The is the reasoning for making the $link
+variable an array. Inside the link variable is another array - an
+associative array. Here are the keys of the link array:
+
+label
+-----
+The proper name of the module. This is what the module will be titled
+in the control panel
+
+
+restricted
+----------
+Indicates if this module is restricted to administrators. If false,
+any one capable of logging in will see the link. In certain
+situations, this may be desired.
+
+
+url
+---
+The address resulting from clicking on the link. This will most likely
+include "index.php?module=your_module_name" plus some administrative
+variables.
+
+
+description
+-----------
+A description of your module. It will appear next to the module link.
+
+
+image
+-----
+The file name of the image shown next to your link. 
+
+
+tab
+---
+The tab you want your link to appear on. There are three default
+choices:
+
+1) content - if your module adds content to the web site, put the link
+here.
+
+2) admin - if your module assists with the administration of the site
+   or indirectly adds to the site content, put your link here.
+
+3) developer - if your module helps with the development of a module,
+   theme, style sheet, or anything outside the content or
+   administration of the site; put your link here.
+
+
+
+2. Tabs
+......................................................................
+
+Tabs control the different administrative pages. I just went over
+three of the default tabs (content, admin, developer). Your module's
+complexity may require a tab of its own.
+
+Going back to the User module example, you can see the $tabs[]
+array. It contains the information for the My Page tab. My Page is a
+special tab for controlling logged user options.
+
+Here are the variables needed in your tabs array:
+
+title
+-----
+The clickable title of the tab.
+
+
+label
+-----
+This is a simple word to identify the tab. The label should be
+alphanumeric with underlines only.
+
+
+link
+----
+The tab's destination url.
+
+
+To learn more about using the Control Panel in your module, please see
+part V. section B.
+
+
+
+F. Dependencies
+----------------------------------------------------------------------
+
+Sometimes modules depend on other modules to function properly. Or
+perhaps your module uses only the latest version of another module or
+the core. In order to prevent people from installing or updating your
+module, you need to create a dependency file.
+
+A dependency file is an xml file describing the various modules and
+versions required by your module. It lives in your module's boost
+directory. Here is an example from Blog:
+
+<?xml version="1.0"?>
+<dependency>
+  <module>
+    <title>comments</title>
+    <properName>Comments</properName>
+    <version>0.2.5</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/comments</url>
+  </module>
+</dependency>
+
+This file tells phpWebSite the following:
+1) Blog is dependent on one module
+2) The module's title is comments.
+3) The proper name of the module is "Comments."
+4) Comments needs to at or above version 0.2.5.
+5) More information about Comments can be found at
+   http://phpwebsite.appstate.edu/downloads/modules/comments
+
+You may add other modules by copying the format of the above:
+
+<module>
+...
+</module>
+<module>
+...
+</module>
+
+When finished, save this file as dependency.xml in your module's boost
+directory. Make sure to update this file along with your module.
+
+
+G. Installing
+----------------------------------------------------------------------
+
+Your module should now be ready for installation. Go into the Boost
+module and see if it appears on the list of "Other Modules." If you
+don't see it make sure your module is under the "mod" directory and
+that your module has a boost.php in its "boost" directory.
+
+After you click install, Boost does the following:
+1) Looks for your install.sql and imports it
+2) Looks for your install.php file and executes it
+3) Repeats step 2 until it is finished
+4) It copies your template, config, and javascript directory files
+   locally.
+5) It registers your module to other modules
+6) It registers other modules to you (i.e. controlpanel, users, etc.)
+7) It registers your module to itself (like controlpanel does)
+8) It flags your module to the key registration table
+9) It puts your module in the "modules" table.
+10) Tells you if the process was successful or not.
+
+If the installation went poorly, check your boost.log and error.log
+files in your logs/ directory. You will probably need to be root to do
+so. Log files contain sensitive information.
+
+If the installation did not contain any errors, congratulations!
+
+
+
+IV. Run Process
+______________________________________________________________________
+
+
+A. The index.php file
+----------------------------------------------------------------------
+phpWebSite goes through a specific routine when accessing your
+module. The most important file in your module's directory is the
+index.php file. When your module is accessed directly, the index.php
+file is included by the core.
+
+Your index.php decides the direction of your module. Are we looking at
+an item? Was a new item just saved? Are we deleting an item? Your
+index.php file determines the path.
+
+Personally, I used to put all of my decision pathing in the index
+file. I tend not to do so anymore. More likely my index.php does three
+things:
+
+1) Is the user supposed to be here?
+   I will check to see if the index.php file is getting called
+   directly by the user. 99.9% of the time, you do not want this to
+   happen. What I do is check to see if the PHPWS_SOURCE_DIR is
+   defined. If it is not, phpWebSite is not running. Therefore, we can
+   stop execution cold.
+
+2) Is the request a harmless request? In other words, is a general
+   user requesting an action for which my module was designed? If so,
+   I route them to a function that determines their specific
+   request. I will tend to set a special variable name of these
+   requests (e.g. user_action, uaction, uop, etc.).
+
+3) Is the request an administrative request that can alter my module's
+   data? If so, I direct them to a function that determines their
+   administrative request. Sometimes I will check to see if they are
+   indeed an admin in the index file. Sometimes I do so in the routed
+   admin function.
+
+Keep in mind the index.php file is ONLY accessed when the module
+variable is set to your module. Blog's index file is accessed whenever
+module=blog:
+
+Example : http://mysite.com/index.php?module=blog&id=11
+
+The above link (if mysite.com existed) would load Blog's index.php
+file and send it an id of 11. Blog is written to check if only and id
+variable is sent. It then loads and prints the Blog entry with that id.
+
+So the index.php file responds to requests sent to your module. What
+if you want your module to respond even if not directly requested?
+This is where the next three "inc" files come in.
+
+
+B. The Inc Files
+----------------------------------------------------------------------
+
+I wrote about the inc directory earlier in chapter III, section B. It
+contains configuration files that should not be altered by site
+administrators. This directory also holds the three important module
+processing files: init.php, runtime.php, and close.php. Each one of
+these three files is called on every page load whether your module was
+specifically called or not.
+
+1. init.php
+......................................................................
+
+This file should contain code you wish to get executed before
+phpWebSite initializes the session. The most common use of init.php is
+to initialize class files for sessioned objects. PHP does not allow
+you to recall an object session before the session is created. So, you
+must require the object's session file beforehand. The init.php is a
+good place to do so.
+
+
+2. runtime.php
+......................................................................
+
+After every module's init.php file is called and sessions are
+initialized, phpWebSite looks for each module's runtime.php file. This
+file usually contains code that interacts with the current view. For
+example, Blog's runtime file checks to see if it should list its
+entries. You probably don't need this file if your module runs
+independent from other modules.
+
+
+3. close.php
+......................................................................
+
+This is your last chance to execute some of your module's
+code. phpWebSite calls this file after the currently requested
+module's index file is run. Use this file to respond to a previous
+module's actions.
+
+Please keep in mind that all three files are at the mercy of the
+module load order (the "priority" value in the boost.php file). If the
+runtime.php file is not giving you the desired results, try to put the
+same code in close.php. The close.php file may give your module the
+time it needs to read other module actions.
+
+
+V.  Administrating
+______________________________________________________________________
+
+
+   A. Permissions
+----------------------------------------------------------------------
+
+
+
+   B. Control Panel
+----------------------------------------------------------------------
+
+
+
+   C. Settings
+----------------------------------------------------------------------
+
+
+
+   D. Form Class
+----------------------------------------------------------------------
+
+
+
+   E. Files
+----------------------------------------------------------------------
+
+
+
+     1. Images
+......................................................................
+
+
+
+     2. Files
+......................................................................
+
+
+
+   F. DBPager
+----------------------------------------------------------------------
+
+
+
+   G. Mini Admin
+----------------------------------------------------------------------
+
+
+
+
+VI.   Users and Layouts
+______________________________________________________________________
+
+
+
+   A. Layout
+----------------------------------------------------------------------
+
+
+
+   B. Javascript
+----------------------------------------------------------------------
+
+
+
+   C. Key Flag
+----------------------------------------------------------------------
+
+
+
+   D. Caching
+----------------------------------------------------------------------
+
+
+VII.  Uninstallation
+______________________________________________________________________
+
+
+
+
+VIII.  Advanced and Miscellaneous
+______________________________________________________________________
+
+
+
+   A. Approval
+----------------------------------------------------------------------
+
+
+
+   B. Versioning
+----------------------------------------------------------------------
+
+
+   C. Cookies
+----------------------------------------------------------------------
+
+
+
+   D. SmartTags
+----------------------------------------------------------------------
+

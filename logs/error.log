@@ -1,0 +1,12 @@
+[2014-08-05 09:40][-27] _doConnect: [Error message: Access denied for user 'testsite'@'localhost' (using password: YES)]
+[Native code: 1045]
+[Native message: Access denied for user 'testsite'@'localhost' (using password: YES)]
+ ** mysqli(mysqli)://testsite:xxx@localhost/
+[2014-08-05 09:40][-27] _doConnect: [Error message: Access denied for user 'testsite'@'localhost' (using password: YES)]
+[Native code: 1045]
+[Native message: Access denied for user 'testsite'@'localhost' (using password: YES)]
+ ** mysqli(mysqli)://testsite:xxx@localhost/
+[2014-08-05 09:40][-27] _doConnect: [Error message: Access denied for user 'testsite'@'localhost' (using password: YES)]
+[Native code: 1045]
+[Native message: Access denied for user 'testsite'@'localhost' (using password: YES)]
+ ** mysqli(mysqli)://testsite:xxx@localhost/

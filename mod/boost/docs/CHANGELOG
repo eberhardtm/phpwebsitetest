@@ -1,0 +1,211 @@
+Version 2.3.3
+---------------------------------------------------
++ Patch #2795895 - Fixed translation. Thanks HanV
+
+Version 2.3.2
+----------------------------------------------------
+7 April 2009
++ Added two defines to allow admins to disable file and directory
+  backups
++ Updated: conf/config.php
+
+Version 2.3.1
+-----------------------------------------------------
++ Added <pre> tag into changes section
+
+Version 2.3.0
+-----------------------------------------------------
+3 October 2008
++ Error check added for directory copy.
++ Clearing statcache after rename
+
+2 October 2008
++ Bug #2076972: Checking allow_url_fopen before allowing version
+  checking.
++ RFE #1945965: Added prompt instead of confirm for module
+  uninstallation. 
+
+10 September 2008
++ Revert reinstalls control panel links and tabs.
++ Requires control panel update.
+
+12 August 2008
++ Boost's revert was copying core's images to the config directory.
++ Added fourth parameter to registerMyModule. If set to false (true is
+  default), then the module won't be unregistered before registered
+  again.
++ Second Close Window button added to top of update window.
+
+13 June 2008
++ updateFiles will return true on complete success and and array of
+  error messages should a file fail.
++ updateFiles will no longer stop if a single file fails
++ updateFiles now accepts a directory instead of a single file. The
+  destination directory will be backed up and the source directory
+  copied over.
++ updateFiles creates timestamped backup files now.
+
+Version 2.2.2
+-----------------------------------------------------
+30 May 2008
++ Added error log to copy directory command.
+
+Version 2.2.1
+-----------------------------------------------------
+29 November 2007
++ Update wasn't using popup.
+
+5 November 2007
++ Install, uninstall, and update use popups now.
+
+Version 2.2.0
+-----------------------------------------------------
+3 October 2007
++ Removed registered variable from Boost as it doesn't register
+  modules to itself.
++ Added more error logging.
++ Changed Boost to conform with Core 1.6.3 registration change.
+
+26 September 2007
++ Boost now checks all branch directories before allowing updates.
++ Boost will not allow installation if directories are not set.
++ Boost will show the options available should the directories get
+  fixed. Before, it wouldn't show the link.
++ Updated: templates/module_list.tpl
+
+19 September 2007
++ On a branch install, Boost was checking the hub's directory
+  permissions instead of the branch's.
+
+Version 2.1.3
+-----------------------------------------------------
+5 September 2007
++ Boost doesn't copy javascript files if in hub.
++ Updated en locale
+
+Version 2.1.2
+-----------------------------------------------------
+7 August 2007
++ Added revert option to copy a module's files locally.
+
+27 July 2007
++ Boost now expects the javascript directory to be writable as
+  well as the module directory.
++ Added inBranch function for modules
+
+8 June 2007
++ Locale file updated
+
+1 June 2007
++ RFE #1720749 - Boost now detects and warns users of old module
+  installs.
++ Updated files: templates/module_list.tpl
+
+Version 2.1.1
+------------------------------------------------------
+15 May 2007
++ Boost now warns users of Core update.
+
+Version 2.1.0
+------------------------------------------------------
+19 April 2007
++ RFE 1680787 - Boost module list shows full package title
++ updated files: templates/module_list.tpl
+
+13 April 2007
++ Added code to create missing directories in updateFiles
+
+6 April 2007
++ Bug #1695102 - Added permission check before each module install or
+  update.
++ Increase edit popup window height slightly
++ Added currentDone function.
+
+4 April 2007
++ Added German files
++ Changed over to new language format
+
+6 March 2007
++ Removed referenced constructor
+
+5 March 2007
++ Changed control panel icon
++ Changed backLink call to definite url to prevent loops.
++ Added ability to uninstall a module despite dependency settings.
+
+
+Version 2.0.0
+------------------------------------------------------
+
+19 February 2007
++ Reduced translate calls.
+
+15 February 2007
++ Added translate functions
+
+9 January 2007
++ Boost now reports on the directories it deletes.
++ Boost now only deletes image and file directories if defined on install.
+
+8 December 2006
++ Added error check for version checking Bug #1606366
+
+Version 1.9.9
+------------------------------------------------------
+30 November 2006
++ Added link to check all modules for updates at once.
++ Updated file templates/module_list.tpl
+
+29 November 2006
++ Changed updateFiles to return false even with a an error. Now logs
+  the error instead of returning it.
+
+Version 1.9.8
+------------------------------------------------------
+28 November 2006
++ Removed the old loadAsMod functions for core.
++ Core updates config, image, template, and javascript files.
++ Added dependency ability for core.
+
+Version 1.9.7
+------------------------------------------------------
+14 November 2006
++ Check link will appear regardless of directory permissions.
+
+Version 1.9.6
+------------------------------------------------------
+25 October 2006
++ A few small changes to help with branch module updates
+
+Version 1.9.4
+------------------------------------------------------
+11 October 2006
++ Will now read dependencies when checking for new versions
+
+Version 1.9.3
+------------------------------------------------------
+5 October 2006
++ Tracks core dependencies now.
+
+2 October 2006
++ Fixed updateFiles function. Was previously quiting early on
+  duplicates
+
+21 September 2006
++ Added call to clear the cache on a module's removal
++ Added call to clear a module's settings upon removal
++ Recoded call to unregister a module's keys on removal (see Key.php above)
+
+14 August 2006
++ Now reports uncopyable file in log
+
+Version 1.8.6
+------------------------------------------------------
+5 July 2006
++ Added error messages for bad key unregistration
++ Added functions for updating the core.
++ Made links use authorization keys
+
+30 June 2006
++ Added line to unset an uninstalled module from the Module global
+  variable

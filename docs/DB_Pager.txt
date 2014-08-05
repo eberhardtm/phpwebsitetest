@@ -1,0 +1,555 @@
+DB Pager Documentation by Matthew McNaney
+------------------------------------------------------------------
+
+Before version 1.0.0, PhpWebSite had some great paging tools. There
+were just two little details that were troublesome.
+
+1) Often you would need to session the class. This created a bit of
+   overhead and refresh problems.
+2) The pager class would need ALL the results of your data before
+   displaying a portion of the results. Either you repeatedly pulled
+   all the data at one time or you sessioned the results.
+3) The mechanism for employing the pager was complicated.
+
+After working with our Pager class and viewing PEAR's pager class, we
+have tried to combine the best of both worlds.
+
+1) You don't need to session the DB Pager object. It is constructed
+   per page hit and gets its data from the previous view.
+2) The DB Pager pulls ONLY the data information needed per page view.
+3) The process is much simpler.
+
+There are a few downsides:
+
+1) If a user leaves the pager to go to another page, it will be reset
+   to its original settings. However, if you must have it remember the
+   settings from the previous view, you _could_ session the settings.
+2) It expects you to use OOP.
+3) It expects a specific object/table synchronizing.
+4) The pager can only order items with the information it obtains from
+   the database.
+
+Getting Started
+--------------------------------------------------------------------
+You will need to require the DB Pager class:
+
+PHPWS_Core::initCoreClass('DBPager.php');
+or
+require_once PHPWS_SOURCE_DIR . 'core/class/DBPager.php';
+
+You will also need to require the 'working class'. This is the object
+that is going to hold your row data. I will be using File Cabinet as an
+example:
+
+PHPWS_Core::initCoreClass('Image.php');
+
+The File Cabinet uses the image and document class extensively.
+
+Now I need to make my pager object:
+
+$pager = new DBPager('images', 'PHPWS_Image');
+
+The 'images' variable refers to what table to access. The second
+parameter 'PHPWS_Image' is the class to construct from the table
+information. 
+
+
+Setting Main Parameters
+--------------------------------------------------------------------
+There are three main parameters that need to be set for the pager to
+function properly: the module, the template, and the link.
+
+Module:
+The module that is using the pager. Use the setModule function:
+
+$pager->setModule('filecabinet');
+
+
+Template:
+This is the template that the pager will use to display your data (see
+below for template setup information). Use the the setTemplate
+function and supply the path below your module's template directory
+(just like using PHPWS_Template::process):
+
+$pager->setTemplate('imageList.tpl');
+
+
+Link:
+Pager will check the current url for the correct link. If for some
+reason it is having problems, you can set the link manually.
+
+$pager->setLink('index.php?module=filecabinet&amp;action=main&amp;tab=image');
+
+
+With these parameters set, the pager is ready to get started. It will
+pull a number of rows (based on the page limit) from the specified
+table. Each of these rows will then be put into an object (1). Each
+variable will be put into a template array. This template array will
+be run against the row tags in your template. Remember that all the
+variables from your object will be in the template but it is up to you
+to create the appropriate tags.
+
+Displaying the Page
+--------------------------------------------------------------------
+To get the data, just call the get function:
+
+$content = $pager->get();
+
+Layout::add($content);
+
+Read on to configure options and get information on setting up your
+pager template.
+
+
+Where Options
+--------------------------------------------------------------------
+If you want to set restrictions on the table data, you can use the
+addWhere function. This function works just like the Database class
+function of the same name.
+
+$pager->addWhere('type', 'image/jpeg');
+
+If I entered these parameters, then the pager would only pull the rows
+where the 'type' was equal to 'image/jpeg'. The same rules apply to
+this function as to Database. You can set groups, set AND or OR, and
+use less/greater-than.
+
+
+Setting the Order
+--------------------------------------------------------------------
+If you wish to set an listing order, use the setOrder function.
+
+$pager->setOrder('column_name', 'direction', $only_if_empty);
+
+For example if you wanted to order by last name from A to Z:
+
+$pager->setOrder('last_name', 'asc');
+
+From Z to A
+
+$pager->setOrder('last_name', 'desc');
+
+If $only_if_empty is set to 'true' (it is false by default), then the
+order will ONLY be in effect if a sort option has not been
+selected.
+
+
+
+Plugging in Page Tags
+--------------------------------------------------------------------
+If you want to add extra dynamic information to your list template,
+you will need to use the addPageTags function. In the below example, I
+need to translate the column headers, so I am plugging them into
+addTags.
+
+$tags['PAGE_LABEL'] = _('Page');
+$tags['TITLE']      = _('Title');
+$tags['FILENAME']   = _('Filename');
+$tags['MODULE']     = _('Module');
+$tags['SIZE']       = _('Size');
+$tags['ACTION']     = _('Action');
+
+$pager->addPageTags($tags);
+
+
+Plugging in Special Row Tags
+--------------------------------------------------------------------
+If you want to plug in special tags per row, then you can do so using
+the addRowTags function.
+
+This function works differently than addPageTags which just required
+an array of tags. Row tags have the potential to be different every
+iteration. Therefore you need to call them via the object.
+
+$pager->addRowTags('get_row_tags');
+
+This would call a method named 'get_row_tags' on each new object.
+
+$object->get_row_tags();
+
+This function must return an associative array.
+
+class my_object {
+      function get_row_tags()
+      {
+         $template['TITLE'] = $this->getFormatedTitle();
+         return $template;
+      }
+
+      function getFormatedTitle()
+      {
+         return strtoupper($this->title);
+      }
+}
+
+So if the 'title' column is pulled from the table as 'my pets', your
+addition of the new row tag would replace it with 'MY PETS'.
+
+Note that you can also add static row tags and conditionals using this
+function.
+
+One last note. You can add parameters to addRowTags as well:
+
+$pager->addRowTags('get_row_tags', TRUE, 21, 'clown');
+
+function get_row_tags($likes_chocolate, $age, $occupation) {
+...
+} 
+
+
+If you are not using a class objects, another way of changing the row
+output is to pipe the information through a function or static method
+call. To do so, call addRowFunction:
+
+$pager->addRowFunction('row_func');
+
+This would pass your row variables to the "row_func" function and echo
+the resultant array.
+
+function row_func($values) {
+   $tpl['TITLE'] = process_title($values['title']);
+   return $tpl;
+}
+
+You may also call a static method by sending an class and method name
+array like so:
+
+$pager->addRowFunction(array('class_name', 'method_name'));
+
+The result from the method should, again, be an associative array
+corresponding to your pager template.
+
+
+Converting the date
+--------------------------------------------------------------------
+If one of your table columns is in unix time, you can have DBPager
+format it for you:
+
+$pager->convertDate($column_name, $format[%c]);
+
+The $column_name is the title of the datetime column. The format
+matches the parameters used in the strftime function. The default
+value is '%c'.
+
+Keep in mind that dates are formatted BEFORE what is called in
+addRowTags. Don't format it twice.
+
+
+Adding Toggles
+--------------------------------------------------------------------
+Non-colored rows are not only boring, they make it more difficult to
+match information across the page. To combat this, you need to use the
+addToggle function. Here is how you could add red, white, and blue
+stripes to your list.
+
+$pager->addToggle('style="background-color : red"');
+$pager->addToggle('style="background-color : white"');
+$pager->addToggle('style="background-color : blue"');
+
+The pager will alternate between each toggle color as it displays the
+rows (2). I recommend, however, that you use toggle css classes.
+
+$pager->addToggle('class="toggle1"');
+$pager->addToggle('class="toggle2"');
+
+These are supported in several default themes.
+
+
+Adding Search
+--------------------------------------------------------------------
+You can easily add a search text box to your pager.
+$pager->setSearch('search_column');
+
+So if I wanted to search among the db table column 'filename' I would
+add:
+$pager->setSearch('filename');
+
+Each extra parameter sent to setSearch will search an addition column:
+
+$pager->setSearch('filename', 'first_name');
+
+The search form will be visable after you add the SEARCH tag into your
+template.
+
+You may also send an array of column names to setSearch instead of
+breaking them into separate parameters.
+
+Setting up your template
+--------------------------------------------------------------------
+Before you continue, make sure you know how templates work in
+phpWebSite(3). 
+
+It is easy to create a custom sort header for a column. Say you wanted
+to sort by the table column pet_name:
+
+$pager->addSortHeader('pet_name', 'My Pet Names');
+
+This would create a button/title combo that would sort the pet_name
+column. It would look something like this:
+
+[] My Pet Names
+
+You would just need to add "PET_NAME_SORT" to your template.
+
+If you don't use addSortHeader, DBPager will still create a SORT
+button without the header text for every column returned from the
+database.
+
+After the headers come the actual rows. Notice that the column tag
+names are identical to the table column names. The ACTION tag is from
+the Special Row Tags section.
+
+<!-- BEGIN listrows -->
+  <tr {TOGGLE}>
+    <td>{TITLE}</td>
+    <td>{FILENAME}</td>
+    <td>{MODULE}</td>
+    <td>{SIZE}</td>
+    <td>{ACTION}</td>   
+  </tr>
+<!-- END listrows -->
+
+VERY IMPORTANT!!
+You must use the listrows commenting. Pager will repeat the rows
+within the listrows comments. Without them, you will only see one row.
+
+Finally, you need to include the PAGES and LIMITS tags for page
+navigation:
+
+<div align="center">
+  <b>{PAGE_LABEL}</b><br />
+  {PAGES}<br />
+  {LIMITS}
+</div>
+
+If you don't like the limit divisions, you may set your own using
+setLimitList:
+
+$limits[4]  = 4;
+$limits[9]  = 9;
+$limits[16] = 16;
+$pager->setLimitList($limits);
+
+To choose the default limit use:
+$pager->setDefaultLimit(9);
+
+Clicking on the page links will let the user move through the
+data. Clicking on the limit links will let the user control how many
+rows are displayed on screen at a time.
+ 
+The PAGE_LABEL tag is from the Page Tags section.
+
+Here is a full list of the navigation and information tags.
+
+TOTAL_ROWS    : lists the current page within the total number of pages
+PAGE_LABEL    : translated text that says "Page"
+PAGES         : listing of pages with page 'turners' on each end
+PAGE_DROP     : a drop select box for selecting a specific page
+LIMIT_LABEL   : translated text that says "Limit"
+LIMITS        : a small list of limit options
+SEARCH        : a search box (see Adding Search above)
+EMPTY_MESSAGE : if no rows are found, 'No rows found' will appear here
+                {You can set this message with $pager->setEmptyMessage($message)
+
+
+
+Advanced Usage
+--------------------------------------------------------------------
+The pager object has uses a database object in the ->db
+variable. Normally, you never need alter it, however there may be a
+time when you want to mold the pager output.
+
+One instance where I play with the database object is when I want to
+include a column from another table.
+
+For example, lets say that I have a category column in my main
+table. This integer column references the id of another table. We want
+the category title in that table. (Note: this particular example would
+be better suited with the joinResult function).
+
+// Ask for the title from the category_table and retrieve it as
+// cat_title.
+$pager->db->addColumn('category_table.title', NULL, 'cat_title');
+
+// When you add a column, the database class assumes you want only
+// that column. So we include a splat (*) as a column on the main
+// table as well.
+$pager->db->addColumn('main_table.*');
+
+// Here is the where join
+$pager->db->addWhere('main_table.category_id', 'category_table.id');
+
+Now when pager pulls with will create a cat_title variable for each
+row. Make sure that if you are using item classes with the pager that
+you create a variable to hold the extra column.
+
+
+Advanced Joins
+--------------------------------------------------------------------
+If you want the results of a join to appear in your page, you can use
+the joinResult function.
+
+There are several parameters in this function:
+
+$pager->joinResult(source_column, join_table, join_column,
+                   content_column, new_name);
+
+source_column
+This column matches the id from the joined table. In the previous
+example, category_id would be the source_column.
+
+join_table
+The table we want to join to. Again, using the above, category_table
+would be the join_table.
+
+join_column
+The column to join the source_column to (e.g. "id").
+
+content_column
+The result we want returned. In category_table it could be the "title"
+column.
+
+new_name
+If you don't want result under the join_column name, give it a
+substitute.
+
+Example:
+
+$pager->joinResult('category_id', 'category_table', 'id', 'title',
+                   'category_title');
+
+DBPager will also create a SORT tag for the new column.
+
+One last thing, if you are using objects with you DB_Pager
+implementation, you MUST create a variable for your object. In this
+case I would need $object->category_title to exist.
+
+
+Saving the last view
+-------------------------------------------------------------------
+If the user or the module deviates from the pager, the variables in
+the url will be lost. This will cause the last sort or view to be
+reset. To prevent this, use cacheQueries:
+
+$pager->cacheQueries();
+
+The default parameter is true. This will take a snapshot of the
+current order, limit, and search. When the user returns, the snapshot
+will be loaded.
+
+Setting Cache identifier
+------------------------------------------------------------------
+DBPager's caching system uses the template location as its index. If
+you are running different processes on the same template, you may not
+want your caching to pass from page to page.
+
+To prevent this, label each process using setCacheIdentifier.
+Example:
+
+$pager1->setCacheIdentifier('process1');
+$pager2->setCacheIdentifier('process2');
+
+Grabbing the url
+-------------------------------------------------------------------
+If you want to store the url from pager use saveLastView:
+
+$pager->saveLastView();
+
+This will copy the current url keyed to the table.
+
+To get the url back call
+
+$url = DBPager::getLastView($table_name);
+
+You could then apply that url to a link or header location to return
+the user to the pager.
+
+
+CSV reporting
+--------------------------------------------------------------------
+DBPager can allow a CSV file export. Setting this up in your current
+pager view is pretty simple.
+
+First, set a report row
+$pager->setReportRow('report_row_function');
+
+The "report_row_function" needs to be the name of a method in your
+pager's assigned class or a stand alone function.
+
+The function specified should return an associative array of variables
+like so:
+
+// this is class method
+public function report_row_function()
+{
+    $row['name']          = $this->name;
+    $row['date_of_entry'] = strftime('%c', $this->date_of_entry);
+
+    return $row;
+}
+
+or as a stand alone function:
+
+function report_row_function($data)
+{
+    $row['name']          = $data['name']
+    $row['date_of_entry'] = strftime('%c', $data['date_of_entry']);
+
+    return $row;
+}
+
+Unlike addRowTags, the report will only contain rows returned by the
+function. The pager ignores the other table columns.
+
+
+In order for the user to have access to the report, create a 
+{CSV_REPORT} tag somewhere in your pager template.
+
+The csv report will be temporarily stored in the CACHE_DIRECTORY
+defined in your config.php file, so make sure it is writable.
+
+Normally, the viewer is offered the choice to download a partial
+report based on their current criteria. They can also opt to download
+a full report containing all data on one report. If you wish to
+prevent partial reporting call the following:
+
+$pager->allowPartialReport(false);
+
+Setting this to true would allow partial reports again.
+
+Note: the csv format separates with commas and delimits with
+quotes. It is recommended that your report row function add slashes to
+quotes contained within. 
+
+
+Conclusion
+--------------------------------------------------------------------
+I hope you find the DB Pager class useful. If you have questions,
+please visit our IRC channel #phpwebsite at freenode.net.
+
+If you have questions or comments about this document, please email me
+at:
+
+Matt McNaney <matt at tux dot appstate dot edu>
+
+
+
+Footnotes
+--------------------------------------------------------------------
+(1) Here is where it is important that your object variables match the
+    table column names:
+
+Table column    : title    > All is well, the title will be put into 
+Object variable : title    > the object's 'title' variable.
+
+Table column    : name     > Unless there is an object variable entitled
+Object variable : title    > 'name', this information will get lost.
+
+
+(2) Make sure you have the {TOGGLE} tag in your list.
+
+Example <tr {TOGGLE}><td>{TITLE}</td></tr>
+
+
+(3) Look in docs/template.txt.
+

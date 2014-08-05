@@ -1,0 +1,995 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-01-15 08:11-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "\"%s\" permission column created."
+msgstr ""
+
+#, php-format
+msgid "%s account created"
+msgstr ""
+
+#, php-format
+msgid "%s created an user account for you."
+msgstr ""
+
+msgid "- None -"
+msgstr ""
+
+msgid "-- All --"
+msgstr ""
+
+msgid "-- Use server's time zone --"
+msgstr ""
+
+msgid "A deity can not make themselves mortal."
+msgstr ""
+
+msgid "A group with this name already exists."
+msgstr ""
+
+msgid ""
+"A problem occurred when accessing user information. Please try again later."
+msgstr ""
+
+msgid "A problem occurred when trying to register this module to My Page."
+msgstr ""
+
+msgid "A problem occurred when trying to unregister this module from My Page."
+msgstr ""
+
+msgid ""
+"A problem occurred when trying to update your password. Please try again "
+"later."
+msgstr ""
+
+msgid "Account Information"
+msgstr ""
+
+msgid "Account created successfully!"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Activate this user"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Add / Edit Groups"
+msgstr ""
+
+msgid "Add Group"
+msgstr ""
+
+msgid "Add Member"
+msgstr ""
+
+msgid "Add Script File"
+msgstr ""
+
+msgid "Add User"
+msgstr ""
+
+msgid "Add this user to this group."
+msgstr ""
+
+msgid "All visitors"
+msgstr ""
+
+msgid "Allow Remember Me"
+msgstr ""
+
+msgid "Allow new user creation?"
+msgstr ""
+
+msgid "Allow script tag input"
+msgstr ""
+
+msgid ""
+"An error occurred when trying to create your account. Please try again later."
+msgstr ""
+
+msgid "An error occurred when trying to save the group."
+msgstr ""
+
+msgid "An error occurred when trying to save the user. Check your logs."
+msgstr ""
+
+msgid "An error occurred while updating your user account."
+msgstr ""
+
+msgid "An error occurred."
+msgstr ""
+
+msgid "Are you SURE you want to remove this group?"
+msgstr ""
+
+msgid ""
+"Are you certain you want this user to have complete control of this web site?"
+msgstr ""
+
+#, php-format
+msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+msgstr ""
+
+msgid "Are you sure you want to deify this user?"
+msgstr ""
+
+msgid "Are you sure you want to drop this authorization script?"
+msgstr ""
+
+msgid "Are you sure you want to remove deity status?"
+msgstr ""
+
+msgid "Authorization"
+msgstr ""
+
+msgid "Authorization Scripts"
+msgstr ""
+
+msgid "Authorization updated."
+msgstr ""
+
+msgid "Authorization/Settings"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Captcha information was incorrect."
+msgstr ""
+
+msgid "Change my Settings"
+msgstr ""
+
+msgid "Check all restricted"
+msgstr ""
+
+msgid "Check all unrestricted"
+msgstr ""
+
+#, php-format
+msgid "Checking %s module"
+msgstr ""
+
+msgid "Click here if you are not redirected."
+msgstr ""
+
+msgid "Click here to log in"
+msgstr ""
+
+msgid "Closest matches below."
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Confirmation email"
+msgstr ""
+
+msgid "Confirmation phrase is not correct."
+msgstr ""
+
+msgid "Contact the site administrator"
+msgstr ""
+
+msgid "Control Panel flyout menu"
+msgstr ""
+
+msgid "Could not access hub database."
+msgstr ""
+
+#, php-format
+msgid "Could not connect to %s"
+msgstr ""
+
+#, php-format
+msgid "Could not create \"%s\" permission column."
+msgstr ""
+
+msgid "Could not find any hub deities."
+msgstr ""
+
+msgid "Could not find user."
+msgstr ""
+
+msgid ""
+"Could not load authentication script. Please contact site administrator."
+msgstr ""
+
+msgid "Create Group"
+msgstr ""
+
+msgid "Create User"
+msgstr ""
+
+msgid "Current Members"
+msgstr ""
+
+msgid "Deactivate this user"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Default group"
+msgstr ""
+
+msgid "Deity"
+msgstr ""
+
+msgid "Deity users copied to branch."
+msgstr ""
+
+msgid "Delete Groups"
+msgstr ""
+
+msgid "Delete Users"
+msgstr ""
+
+msgid "Did you forget your password at our site?"
+msgstr ""
+
+msgid "Did you forget your user name at our site?"
+msgstr ""
+
+msgid "Display"
+msgstr ""
+
+msgid "Display Name"
+msgstr ""
+
+msgid "Display name"
+msgstr ""
+
+msgid "Display name is improperly formatted."
+msgstr ""
+
+msgid "Do you wish to notify the new user?"
+msgstr ""
+
+msgid "Drop"
+msgstr ""
+
+msgid "Drop this member from the group."
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit Authorization Script"
+msgstr ""
+
+msgid "Edit Group"
+msgstr ""
+
+msgid "Edit Permissions"
+msgstr ""
+
+msgid "Edit User"
+msgstr ""
+
+msgid "Edit Users"
+msgstr ""
+
+msgid "Edit restrictions"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Email Address"
+msgstr ""
+
+msgid "Email Verification"
+msgstr ""
+
+msgid "Email address already in use."
+msgstr ""
+
+msgid "Email address not found. Please try again."
+msgstr ""
+
+msgid "Enter your new password"
+msgstr ""
+
+msgid "Enter your user name."
+msgstr ""
+
+msgid "Failed to send notification email."
+msgstr ""
+
+msgid "Forbidden usernames (one per line)"
+msgstr ""
+
+msgid "Forgot Password"
+msgstr ""
+
+msgid "Forgot password?"
+msgstr ""
+
+msgid "Forgot your password?"
+msgstr ""
+
+msgid "Forgot your user name?"
+msgstr ""
+
+msgid "Forgotten password attempt made on a deity account."
+msgstr ""
+
+msgid "Forgotten your user name? Enter your email address instead."
+msgstr ""
+
+msgid "Generate password"
+msgstr ""
+
+msgid "Group Name"
+msgstr ""
+
+msgid "Group created."
+msgstr ""
+
+msgid "Group does not exist."
+msgstr ""
+
+msgid "Group name"
+msgstr ""
+
+msgid "Groups"
+msgstr ""
+
+msgid "Hello"
+msgstr ""
+
+msgid "Here is the address to return to our site:"
+msgstr ""
+
+msgid "Hide login box"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "If so, you may click the link below to reset it."
+msgstr ""
+
+msgid ""
+"If you did not wish to reset your password, you may ignore this message."
+msgstr ""
+
+msgid "Immediate"
+msgstr ""
+
+msgid "Improper permission level for action requested."
+msgstr ""
+
+msgid "Improperly formatted group name."
+msgstr ""
+
+msgid "In group"
+msgstr ""
+
+msgid "Invalid variable name."
+msgstr ""
+
+msgid "Language preference"
+msgstr ""
+
+msgid "Last Logged"
+msgstr ""
+
+msgid "Lets you create and edit users and groups."
+msgstr ""
+
+msgid "Limit users by group"
+msgstr ""
+
+msgid "Local"
+msgstr ""
+
+msgid "Localization"
+msgstr ""
+
+msgid "Log Out"
+msgstr ""
+
+msgid "Logged visitors"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Login Page"
+msgstr ""
+
+msgid "Login page"
+msgstr ""
+
+msgid "Manage Groups"
+msgstr ""
+
+msgid "Manage Members"
+msgstr ""
+
+msgid "Manage Users"
+msgstr ""
+
+msgid "Member added."
+msgstr ""
+
+msgid "Member not found."
+msgstr ""
+
+msgid "Member removed."
+msgstr ""
+
+msgid "Members"
+msgstr ""
+
+msgid "Members found."
+msgstr ""
+
+msgid "Missing an email address."
+msgstr ""
+
+msgid "Missing authorization script."
+msgstr ""
+
+msgid "Missing key information."
+msgstr ""
+
+msgid "Missing my_page function."
+msgstr ""
+
+msgid "Mistyped username."
+msgstr ""
+
+msgid "Module does not exist."
+msgstr ""
+
+msgid "Module tried to detect a non-existent permission."
+msgstr ""
+
+msgid "Module's item permission file is missing."
+msgstr ""
+
+msgid "Module's permission file is missing."
+msgstr ""
+
+msgid "Mortal"
+msgstr ""
+
+msgid "My Page"
+msgstr ""
+
+msgid "My Page registered to Users module."
+msgstr ""
+
+msgid "My Page unavailable to remote users."
+msgstr ""
+
+msgid "My Page unregistered from Users module."
+msgstr ""
+
+msgid "Never"
+msgstr ""
+
+msgid "New Account Sign-up"
+msgstr ""
+
+msgid "New Group"
+msgstr ""
+
+msgid "New User"
+msgstr ""
+
+msgid "New user signup is currently disabled."
+msgstr ""
+
+msgid "New user signup not allowed."
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No matches found."
+msgstr ""
+
+msgid "No members."
+msgstr ""
+
+msgid "No modules are registered to My Page."
+msgstr ""
+
+msgid "No new scripts found"
+msgstr ""
+
+msgid "No permissions file found."
+msgstr ""
+
+msgid "No restricted edit groups found."
+msgstr ""
+
+msgid "No view groups found."
+msgstr ""
+
+msgid "No, do not notify"
+msgstr ""
+
+msgid "No, leave them as a deity."
+msgstr ""
+
+msgid "No, leave them as a mortal."
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "None found"
+msgstr ""
+
+msgid "Not allowed"
+msgstr ""
+
+msgid "Not in group"
+msgstr ""
+
+msgid "Notify user"
+msgstr ""
+
+msgid ""
+"Once you change your display name, you may not change it again until reset "
+"by the site administrator."
+msgstr ""
+
+msgid "Only another deity can create a deity."
+msgstr ""
+
+msgid "Only another deity can create a mortal."
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Password confirm"
+msgstr ""
+
+msgid "Password is too easy to guess."
+msgstr ""
+
+#, php-format
+msgid "Password must be at least %s characters in length."
+msgstr ""
+
+msgid "Password was blank"
+msgstr ""
+
+#, php-format
+msgid "Password: %s"
+msgstr ""
+
+msgid "Passwords do not match."
+msgstr ""
+
+msgid "Passwords must be reentered on user name change."
+msgstr ""
+
+msgid "Passwords were not acceptable for the following reason:"
+msgstr ""
+
+msgid "Permission"
+msgstr ""
+
+msgid "Permission table name already exists."
+msgstr ""
+
+msgid "Permission table not found."
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Permissions file not implemented."
+msgstr ""
+
+msgid "Permissions table created successfully."
+msgstr ""
+
+msgid "Permissions table not created successfully."
+msgstr ""
+
+msgid "Permissions table not removed successfully."
+msgstr ""
+
+msgid "Permissions table removed successfully."
+msgstr ""
+
+msgid "Permissions updated"
+msgstr ""
+
+msgid "Permissions updated."
+msgstr ""
+
+msgid "Please change your password immediately after logging in."
+msgstr ""
+
+msgid "Please check your email for a response."
+msgstr ""
+
+msgid "Please enter a valid email address as a site contact."
+msgstr ""
+
+msgid "Please try another user name."
+msgstr ""
+
+msgid "Preferences"
+msgstr ""
+
+msgid "Preferred editor (admins only)"
+msgstr ""
+
+msgid "Register Module Permissions"
+msgstr ""
+
+msgid "Register user permissions"
+msgstr ""
+
+msgid "Remember me"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Repeat it here please"
+msgstr ""
+
+msgid "Reset my password"
+msgstr ""
+
+msgid "Restricted"
+msgstr ""
+
+msgid "Save permissions"
+msgstr ""
+
+msgid "Script Filename"
+msgstr ""
+
+msgid "Send reminder"
+msgstr ""
+
+msgid "Set Group Permissions"
+msgstr ""
+
+msgid "Set User Permissions"
+msgstr ""
+
+#, php-format
+msgid "Set permissions"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Sign up"
+msgstr ""
+
+#, php-format
+msgid "Site address: %s"
+msgstr ""
+
+msgid "Site contact email"
+msgstr ""
+
+msgid "Sorry"
+msgstr ""
+
+msgid "Sorry but you do not authorize from this site."
+msgstr ""
+
+#, php-format
+msgid ""
+"Sorry but your authorization is not checked on this site. Please contact %s "
+"for information on reseting your password."
+msgstr ""
+
+msgid "Sorry there is a problem with your account."
+msgstr ""
+
+msgid "Sorry, we are not accepting new users at this time."
+msgstr ""
+
+msgid "Specific group(s)"
+msgstr ""
+
+msgid "The is a problem with My Page."
+msgstr ""
+
+#, php-format
+msgid "The user name associated with your email address is \"%s\""
+msgstr ""
+
+msgid ""
+"There is a problem with your authentication method. Contact the site "
+"administrator."
+msgstr ""
+
+msgid "There was a problem with this module's My Page file."
+msgstr ""
+
+msgid "There was problem creating your acccount. Check back later."
+msgstr ""
+
+msgid ""
+"This authentication does not exist.<br />\n"
+" If you did not log in within the time frame specified in your email, please "
+"apply for another account."
+msgstr ""
+
+msgid "This email address cannot be used."
+msgstr ""
+
+msgid "This module is not registered with My Page"
+msgstr ""
+
+msgid "Time Zone"
+msgstr ""
+
+msgid "Tried to perform an admin function in Users."
+msgstr ""
+
+msgid "Unable to copy deity login to branch."
+msgstr ""
+
+msgid "Unable to copy deity user group to branch."
+msgstr ""
+
+msgid "Unable to copy deity users to branch."
+msgstr ""
+
+msgid "Unable to find font file for graphic confirmation."
+msgstr ""
+
+msgid "Unable to load key."
+msgstr ""
+
+msgid "Unable to save user information."
+msgstr ""
+
+msgid "Unable to set permissions. Bad key data."
+msgstr ""
+
+msgid "Unable to write confirmation graphic to server."
+msgstr ""
+
+msgid "Uncheck all restricted"
+msgstr ""
+
+msgid "Uncheck all unrestricted"
+msgstr ""
+
+msgid "Unknown error."
+msgstr ""
+
+msgid "Unrestricted"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Update Group"
+msgstr ""
+
+msgid "Update Settings"
+msgstr ""
+
+msgid "Update User"
+msgstr ""
+
+msgid "Update authorization scripts"
+msgstr ""
+
+msgid "Update my information"
+msgstr ""
+
+msgid "Update password"
+msgstr ""
+
+msgid "Use Daylight Savings Time"
+msgstr ""
+
+msgid "Use graphic authentication"
+msgstr ""
+
+msgid "User Administration"
+msgstr ""
+
+msgid "User Menu"
+msgstr ""
+
+msgid "User Signup Mode"
+msgstr ""
+
+msgid "User account deactivated."
+msgstr ""
+
+msgid "User created and notified."
+msgstr ""
+
+msgid "User created successfully. Check your email for your login information."
+msgstr ""
+
+msgid "User created."
+msgstr ""
+
+msgid "User deified."
+msgstr ""
+
+msgid "User is missing their permission group"
+msgstr ""
+
+msgid ""
+"User name not found. Check your spelling or enter an email address instead."
+msgstr ""
+
+msgid "User or display name off limits. Please try another."
+msgstr ""
+
+msgid "User remains a deity."
+msgstr ""
+
+msgid "User remains a lowly mortal."
+msgstr ""
+
+msgid "User settings updated."
+msgstr ""
+
+msgid "User transformed into a lowly mortal."
+msgstr ""
+
+msgid "User tried to login using Remember Me with a malformed cookie."
+msgstr ""
+
+#, php-format
+msgid "User tried to send bad hash (%s) to confirm user."
+msgstr ""
+
+msgid "User updated."
+msgstr ""
+
+msgid "User's email address is missing or malformed."
+msgstr ""
+
+msgid "User's email address is missing."
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Username and password combination not found."
+msgstr ""
+
+msgid "Username and password refused."
+msgstr ""
+
+msgid "Username is improperly formatted."
+msgstr ""
+
+#, php-format
+msgid "Username: %s"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
+msgid "Users module will re-register each module's permissions."
+msgstr ""
+
+msgid "View restrictions"
+msgstr ""
+
+msgid "Want to join?"
+msgstr ""
+
+msgid ""
+"Warning: this user's authorization script is broken. Choose another and "
+"update."
+msgstr ""
+
+msgid "We are currently unable to send out email reminders. Try again later."
+msgstr ""
+
+msgid "We have sent you an email to reset your password."
+msgstr ""
+
+msgid ""
+"We have sent you an user name reminder. Please check your email and return "
+"to log in."
+msgstr ""
+
+msgid "Welcome!"
+msgstr ""
+
+msgid "Why can't I change my password?"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, make them a deity."
+msgstr ""
+
+msgid "Yes, make them a mortal."
+msgstr ""
+
+msgid "Yes, send them an email"
+msgstr ""
+
+msgid "You already have an account."
+msgstr ""
+
+msgid "You have one hour to respond."
+msgstr ""
+
+msgid "You may log-in using the following information:"
+msgstr ""
+
+msgid "You must enter either a username or email address."
+msgstr ""
+
+msgid "You need to set a site contact address."
+msgstr ""
+
+msgid "You will return to the home page in five seconds."
+msgstr ""
+
+msgid ""
+"Your account has been deactivated. You will need to contact a site "
+"administrator to have it reactivated."
+msgstr ""
+
+msgid "Your account has been successfully activated. Please log in."
+msgstr ""
+
+msgid ""
+"Your account is authorized external to this site. You will need to update it "
+"at the source."
+msgstr ""
+
+msgid ""
+"Your email address is missing from your account. Please contact the site "
+"administrators."
+msgstr ""
+
+msgid "Your password request was not found or timed out. Please apply again."
+msgstr ""
+
+msgid ""
+"Your user account has not been approved yet. Make sure you have responded to "
+"your authentication email."
+msgstr ""

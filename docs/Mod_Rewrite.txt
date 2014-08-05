@@ -1,0 +1,126 @@
+Using Mod_Rewrite with phpWebSite
+by Matthew McNaney
+---------------------------------------------------------------------
+
+Warning: please read this:
+http://httpd.apache.org/docs/2.0/howto/htaccess.html#when
+
+If you agree with their sentiment, then you can stop reading
+here. Without .htaccess, phpWebSite can not use mod_rewrite.
+
+When writing a module, you may find that some of your links are
+getting rather complicated.
+
+For example, say you are writing a module that looks at news
+articles. You have link to an article on your home page and it looks
+something like the following:
+
+http://www.mysite.com/index.php?module=article&action=view&id=5312
+
+Using mod_rewrite functionality, you could change that link to:
+
+http://www.mysite.com/article/action/view/id/5312
+
+This is more straight forward, easier for search engines to index, and
+much easier to explain over the phone. PhpWebSite can help you achieve
+this.
+
+Before you start trying to write modules that take advantage of this,
+you will need to make sure your installation of phpWebSite supports
+it.
+
+First off, you have to be running Apache. If you are not, it won't
+work. There may be solutions for Microsoft IIS and other web servers
+but you will have to learn the differences yourself.
+
+Second, you need to configure Apache to use mod_rewrite. If you don't
+have access to Apache configuration files you will need to ask the
+server admin to set these settings for you. If they refuse, then you
+can't use mod_rewrite.
+
+In Apache, look in your httpd.conf file for this line:
+LoadModule rewrite_module modules/mod_rewrite.so
+
+In Apache2, look for your mods-enabled directory (start looking in
+/etc/apache2/). List the directory and you will see several symbolic
+links. You should see one that looks something like this:
+rewrite.load -> ../mods-available/rewrite.load
+
+If you don't, create it:
+ln -s ../mods-available/rewrite.load
+
+If rewrite.load isn't in the mods-available directory, you will have
+to make it:
+
+Example of mods-available/rewrite.load
+LoadModule rewrite_module /usr/lib/apache2/modules/mod_rewrite.so
+
+If you don't have the module file, well, it is beyond the scope of
+this document.
+
+There is one more file to edit. In Apache, you will have a httpd.conf
+file. Open it and search for AllowOverride. There may be more than
+one. You are looking for the one that lists the directory where your
+sites are located:
+
+<Directory "/var/www/mysites">
+
+Change AllowOverride from None to All.
+
+In Apache2, go to the sites-available directory and look for your
+apache config file. If you only have one site, look for a "default"
+file. Follow the same steps above for locating your AllowOverride and
+change it to All.
+
+Now restart the Apache server. Go to your site. If you get a 500
+error, you did something wrong or I gave you bad advice. Restore your
+backup files or reverse my instructions and restart the server.
+
+Third, look in your phpWebSite root directory and verify the existance
+of a file named ".htaccess" (note the period).
+
+Finally, you will need to configure phpWebSite to use mod_rewrite. Go
+into your config/core/config.php file and change the define to:
+define("MOD_REWRITE_ENABLED", TRUE);
+
+Your site should be ready to use mod_rewrite now.
+
+Making your Module use mod_rewrite
+
+The rewrite function is very basic. All it facilitates are simple user
+accessible commands. You won't be accessing administrative
+functionality using rewrite as it is unnecessary. Pages that can not
+be viewed by the general public have no need to use rewrite.
+
+You will need a way to 'catch' the request for viewing an item in your
+module. Let's look at our previous example:
+
+http://www.mysite.com/article/action/view/id/5312
+
+When this is sent to phpWebSite, it is going to go to the article
+module and tell it that it wants to view article 5312. It will rewrite
+the address to:
+
+http://www.mysite.com/index.php?module=article&action=view&id=5312
+
+The quickest way to create a rewrite link is to use the Text
+class. For example, for the above:
+
+echo PHPWS_Text::rewriteLink('Click on me', 'article'
+                              array('action'=>'view',
+                                    'id'=>5312));
+
+One more quick note. When phpWebSite uses mod_rewrite, it has to make
+sure that relative links in your theme still function. Therefore, the
+layout module will insert the following in with your metatags:
+
+<base href="http://www.your_site_address.org/" />
+
+If it doesn't do this, the relative links (i.e.images, javascript,
+style sheets) will start looking in directories below the fake address
+sent to the page. The only problem with this is that if you output
+anything outside of using the Layout module, it will disrupt this
+header statement and your style sheets and images may have problems.
+
+To prevent this, make sure that all output is through Layout and that
+you catch errors using the Error class.

@@ -1,0 +1,94 @@
+Using Javascript Test
+by Matthew McNaney
+
+Modular Javascript insertion is easy with the Layout function
+getJavascript. This document gives the basics to inserting any
+javascript into any module. 
+
+We will start with a self-standing Javascript file. You can find it in
+your phpWebSite installation under javascript/example/example.html.
+Point your browser to this file to see it in action.
+
+The script is very basic. You enter some text into the text field, click the
+button, and an alert box pops up with that data. Once you have your
+script, you just need to convert into one usable by phpWebSite.
+
+First, break the script into two sections: the head and the
+body. Take a look at example.html. You will see that the header includes a
+Javascript file.
+
+<script language="javascript" src="example.js"></script>
+
+Looking in the example.js file, you will see a function named
+example() that takes one parameter: entry. This 'entry' is then echoed
+in the alert function.
+
+(Incidently, This is the preferable method of using javascript. It keeps your html
+page neat. You _could_ put all the functions in the header as well but
+it tends to look unorganized.)
+
+We will extract this:
+<script language="javascript" src="example.js"></script>
+
+and save it in head.js with some slight editing.
+
+<script language="javascript"
+src="javascript/example/example.js"></script>
+
+We do so because we will move the example.js file into our
+javascript/example/ directory.
+
+Now we move on to create the body.js. The body.js content is passed to
+the user at the execution of the getJavascript function.
+We will copy this portion:
+
+<input type="button" value="Click Me" 
+onClick="example(document.myForm.exampletext.value)" />
+
+and save it into body.js with a few edits.
+
+<input type="button" value="Click Me" 
+onClick="example(document.{FORM_NAME}.{TEXT_FIELD}.value)" />
+
+When the module developer calls the getJavascript function, they will
+indicate what FORM_NAME and TEXT_FIELD should contain.
+
+Now we are ready to implement the javascript into our code:
+
+$content = "<form name=\"myForm\" action=\"index.php\" method=\"post\">
+<input type=\"textfield\" name=\"exampletext\" />";
+
+$values = array("FORM_NAME"=>"myForm", "TEXT_FIELD"=>"exampletext");
+
+$content .=  Layout::getJavascript("example", $values);
+$content .=  "</form>";
+
+Layout::add($content);
+
+The getJavascript() function will then:
+1) Replace the tags found in the head.js file with values in the array
+   (there weren't any in this example) and then paste the result into the
+   page header.
+
+2) Replace the tags found in the body.js with values in the array
+   (FORM_NAME and TEXT_FIELD). The completed data will then be
+   returned as the function result.
+
+3) The module developer finally merges the returned data with his form
+   and puts it into Layout.
+
+Voila! We now have a customizable Javascript!
+
+One quick note. You may wish to have default values placed into your
+javascript should the developer leave them out. To do so, just create
+a default.php file in the directory with your head and body
+file. Next, create an array named $default and fill it with your
+values. The key of each value should match the tag in your script.
+
+This should get you started. For more examples, just look at the
+scripts included with phpWebSite. Some are very complicated (e.g.
+HyperTextArea) while others are very basic (e.g. Check All).
+
+What is nice is that you really don't need to know much about how the
+script functions for it to work in phpWebSite. All you really need to
+know how it is accessed.

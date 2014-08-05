@@ -1,0 +1,536 @@
+Version Documentation
+by Matthew McNaney
+
+
+Version 1.5 Rewrote portions to conform to changes in the module
+Version 1.0 Initial draft
+
+Introduction
+---------------------------------------------------------------------
+Version is module that assists with storing past 'versions' of your
+content. It also contains approval processing tools that work with
+item permissioning.
+
+
+Requirements
+---------------------------------------------------------------------
+Version uses a data 'source'. This 'source' is what version bases its
+processes upon. Although your source can be an array of data, you may
+find it easier to use an object. Version accepts both.
+
+If you are using an object, the variables of it _must_ be identical to
+the column names of the table that contains it. So if your object
+looks like this:
+$this->name
+$this->address
+$this->city
+then your database table needs to look like:
+
+name |  address  |  city
+
+If your variables differ, then your source data should be an array. You
+can then load the values however you wish.
+
+The variable/table column "id" is _required_. Version expects to find
+an variable named "id" when processing your data. 
+
+If you are going to use the approval functionality, I suggest two
+columns on your items table - one to store the item's creator's id and
+an approval flag.
+
+The creator id will let you check if the current user is the original
+author. Usually you want to give this person access to an item
+regardless of group id settings.
+
+The approval column makes it easier to ignore unapproved items when
+building lists.
+
+To use the approval functionality, you should familiarize yourself
+with item permissioning under the User module: the basics of which
+will be covered in this documentation.
+
+
+Getting Started
+---------------------------------------------------------------------
+Start by requiring the Version class once:
+
+PHPWS_Core::initModClass('version', 'Version.php');
+
+Version is not a static class. You will need to instantiate it.
+
+$version = & new Version('source_table');
+
+The "source_table" is the database table you use to store your source
+data.
+
+After instantiating the version, you need to set the source.
+
+$version->setSource($my_item);
+
+Again, $my_item can be an object or an array.
+
+Your item needs to have its id set.
+
+Important: make sure to set the source at the proper time. For
+example, this would be bad:
+
+$version->setSource($new_item);
+$new_id = $new_item->save();
+$new_item->id = $new_id;
+
+The reason this will cause a problem was because Version expects to
+find the current id of the source. If you are saving a new item,
+version needs that information. You could either place the setSource
+function call AFTER the $new_item was saved and filled in with its new
+id or you could call
+$version->setSourceId($new_id)
+afterwards.
+
+
+Unapproved vs. Approved
+---------------------------------------------------------------------
+There are two states for a version: approved and unapproved.
+
+You will need to determine whether your item is approved or not.
+
+( Note: You should be familiar with restricted and unrestricted
+  users. If not, please read the Permissions.txt file.)
+
+An item should be approved if:
+1) an unrestricted user submited a new or updated item or
+2) an unrestricted user approved an unapproved version.
+
+An item is not approved if:
+1) a restricted user submited a new item or updated item
+   or
+2) an unrestricted user edited an unapproved item, not approving it.
+
+So, when a new item is posted, you need to check these
+conditions. Here is an example:
+
+if (isset($_POST['version_id'])) {
+
+   // If the version_id is set, then the previous form was editing an
+   // unapproved version. Regardless of who submitted it, it is not 
+   // approved yet. More below
+
+   $my_item->approved = 0;
+
+} elseif(Current_User::isRestricted('blog')) {
+
+   // The user is a restricted admin. They can create and edit
+   // items but all submission require approval. approved is again 0
+
+   $my_item->approved = 0;
+
+} else {
+
+   // If this is not an edit of a version and the user is not
+   // restricted, then this item is pre-approved. Set approval to 1
+
+   $my_item->approved = 1;
+
+}
+
+The above covers a posting of an item. Approval of an item is covered
+further in the document.
+
+
+Editing the Unapproved
+---------------------------------------------------------------------
+Restricted users can edit unapproved item more than once. The changes
+will not go into effect until the item is approved.
+
+When you are in your edit function, you need to check to see if there
+is an unapproved version.
+
+Create your version as normal:
+$version = & new Version('my_mod_table');
+
+// $my_item is the ORIGINAL item object.
+// We aren't editing it, but we need it to grab the unapproved
+// item
+$version->setSource($my_item);
+
+Now call the 'isWaitingApproval' function:
+
+$approval_id = $version->isWaitingApproval();
+
+If an integer is returned, then that is the id of the unapproved
+version. (Note: you can only have one unapproved version per item).
+Now you just need to load that version.
+
+You can create a new version by entering the id on the second
+construction parameter:
+
+$unapproved_version = & new Version('my_mod_table', $approve_id);
+
+or you can just reset the version that was in use:
+
+$version->setId($approval_id);
+$version->init();
+
+However you do it, you will now have a version that contains the item
+information that is awaiting approval. You can retrieve it two
+ways. If you just want an array of values:
+
+$my_items_data = $version->getSource();
+
+Alternately, you can give version your current object and have it fill
+in the information.
+
+$my_item = & new My_Item;
+$version->loadObject($my_item);
+
+Now you can edit the data however you want. Just make sure of one
+thing - you need to make sure you are keeping track of that version
+id. If you don't then each user edit will create a NEW version. You
+don't want that, you want them to continue editing the same
+version. Just pass the version id to your edit function if needed:
+
+My_Module::edit($my_item, $version_id);
+
+Then make sure to include it as a hidden variable in your form:
+
+function edit($my_item, $version_id=0) {
+    $form = & new PHPWS_Form;
+    $form->addHidden('module', 'my_module');
+
+    if (isset($version_id)) {
+       $form->addHidden('version_id', $version_id);
+    }
+...
+}
+
+Now, looking back to our conditional above:
+
+if (isset($_POST['version_id'])) {
+   $my_item->approved = 0;
+}
+
+It doesn't matter whether the user was restricted or not. The version
+id enforces an unapproved status.
+
+Now we just save our version.
+
+Saving a version
+---------------------------------------------------------------------
+When an approved version is saved, it is like making a backup. You can
+restore these backups later if you wish.
+
+An unapproved version isn't made active until it is approved by an
+administrator (more on that later).
+
+Here is an example of saving a version.
+First we decide if we need to save the item.
+
+if ($my_item->approved || !$my_item->id) {
+     $my_item->save();      
+}
+
+What the above means is:
+1) if $my_item is currently approved, then save the object or
+2) if the $my_item does not have and id (i.e. it is new)
+then save the item.
+
+We must have a successful save of a new, unapproved item so Version
+will have an id to reference. The "approved" parameter makes sure that
+this version is not used by the module.
+
+If the item was not approved and has an id, then don't save it.
+
+Next we save the version itself.
+
+$version = & new Version('my_item_table');
+$version->setSource($my_item);
+$version->setApproved($my_item->approved);
+$version->save();
+
+
+Here is what we have accomplished:
+1) If the user is restricted and
+   a) if the item is new, we create the item as unapproved and create
+      a new version or
+   b) if the item is an update of an approved item, we don't create a
+      new item but we do create a new unapproved version or
+   c) if the item is an update of an unapproved item, we don't save
+      the item but we update the previous unapproved version, however
+2) if the user is unrestricted and
+   a) if the item is new, we create the item and create a new approved
+      version (a backup) or
+   b) if the item is updated, we update the approved item and create a
+      new approved version (a backup) or
+   c) if the item is an unapproved version, we leave the item alone
+      and update the unapproved version.
+
+I realize this is complex but it gets easier the more you use it.
+
+
+Creating an Approval List
+---------------------------------------------------------------------
+Before I go into approving something, let me briefly cover the
+creating an unapprove list.
+
+There is a class in version that assists you with approval. It is
+named, oddly enough, Version_Approval.
+
+First, construct your approval object:
+
+$approval = & new Version_Approval('my_mod', 'my_mod_table');
+
+Next you need to create four links:
+
+$approval->setEditUrl('index.php?module=my_mod&command=edit_unapproved');
+// Edit link is not required, but very handy
+
+$approval->setViewUrl('index.php?module=my_mod&command=view_version');
+// Add this if you want an expanded view link. Not required.
+
+$approval->setApproveUrl('index.php?module=my_mod&command=approve_item');
+
+$approval->setDisapproveUrl('index.php?module=my_mod&command=disapprove_item');
+
+These links direct the administrator back to your module to edit,
+view, approve, or disapprove of the version.
+
+All that is left is receiving the list:
+$template['TITLE'] = 'Approval List for My Module';
+$template['LIST'] = $approval->getList();
+
+Layout::add(PHPWS_Template::process($template, 'my_mod',
+            'approval_list.tpl');
+
+Approval will then list each item's database columns along with their
+values. The default template will show up to six columns, not counting
+the item's id.
+
+If you want to limit which columns are shown, then set the view limit
+before calling getList:
+
+$approval->setColumns('title', 'author');
+
+Now only the title and author columns will be shown.
+
+If you wish to create a more presentable approval list, you can name a
+function to call within your object.
+
+You need to construct your approval object differently:
+
+$approval = & new Version_Approval('my_mod', 'my_mod_table',
+                                   'my_item_class', 'special_view');
+
+The third parameter is your item's class. When the unapproved items
+are pulled from the version table, they will be transformed into
+objects of this class. The fourth parameter is the method to call in
+your object. Therefore we expect a result from:
+
+$result = $my_item->special_view();
+
+The result will be shown instead of the basic table column
+information.
+
+
+Approving and Disapproving Items
+---------------------------------------------------------------------
+Earlier, we had your set approval and disapproval links. Let's cover
+the process after those links are clicked.
+
+First of all, make sure you are checking the permissions of the user
+who clicked those links.
+
+if (!Current_User::isUnrestricted('my_mod')) {
+    Current_User::disallow('Attempted to approve an item.');
+    return;
+}
+
+The above code will prevent monkey business.
+
+Next, let's go over approval. Get the version id of the approved item
+and construction an object.
+
+$version = & new Version('my_mod', $_GET['version_id']);
+
+The version id is added automatically to the links you created in the
+approval list.
+
+Now we can use getSource (see beginning) to get the data from the
+version, but I am going to use an object:
+
+$my_item = & new my_mod_item;
+$version->loadObject($my_item);
+
+Now since the item is approved:
+$my_item->approved = 1;
+
+and save
+$my_item->save();
+
+Now the approved version has updated the old item. To finish up, we
+save an updated copy of the version:
+
+// Set the source because we changed the approval variable
+$version->setSource($my_item);
+
+// Version is now approved
+$version->setApproved(TRUE);
+
+$version->save();
+
+Now we have a backup version (see next section).
+
+Disapproving an item is much easier. Make the version just as before:
+
+$version = & new Version('my_mod', $_GET['version_id']);
+
+and delete it:
+
+$version->delete();
+
+If the item was new, the delete function will detect this and remove
+the source item for you.
+
+Note: because version cleans up the source item when the last version
+is deleted, you don't want to delete the only version of an item. If
+you must then call delete with FALSE as a parameter like so:
+
+$version->delete(FALSE);
+
+
+Creator Permission
+-------------------------------------------------------------------
+After approving a new item, you may want to give the creator
+permission to edit their item. As long as the item has a key, this is
+simple. 
+
+$key = & new Key($my_item->key_id);
+$version->authorizeCreator($key);
+
+The authorizeCreator function will grab the creator id from the
+version and give item level permissions based on the key data.
+
+You should only call this authorizeCreator after an item has been
+approved. You won't save a key until afterwards.
+
+You may want to give a creator access to your item before it is
+approved. In that case, you should just check the current user against
+the creator. 
+
+if (Current_User::isUser($my_item->creator_id)) {
+   let_user_see_edit_link();
+}
+
+This is why we recommend you store the creator id with your item.
+
+If you are working on the version, you could also do this:
+
+if (Current_User::isUser($version->getCreator())) {
+   let_user_see_edit_link();
+}
+
+
+
+Accessing Unapproved Versions Externally
+--------------------------------------------------------------------
+Usually, the preceding information should be enough to allow version
+approval. There may be a time when you need to access unapproved
+versions on your own.
+
+To grab a list of unapproved versions, create your approval object:
+$approval = & new Version_Approval('my_mod', 'my_mod_subtable');
+
+If you want to add a conditional to your query, use addWhere (see
+Database.txt for more information on the Database class). For example,
+say we need versions related to a parent object with an id of 5:
+
+$approval->addWhere('parent_id', 5);
+
+Now only versions with parent_id 5 will be pulled from the version
+table.
+
+Finally we call our get function:
+
+$subversions = $approval->get();
+
+Our "subversions" variable should have an array of unapproved
+versions. If "subversions" is NULL, then no results were found.
+
+
+
+Restore List
+---------------------------------------------------------------------
+Each approved version of an item creates a backup. You can create an
+administrative panel in your module to restore those backups.
+
+Remember our approval list? The Restore list is almost identical.
+
+First we require our Restore class:
+
+PHPWS_Core::initModClass('version', 'Restore.php');
+
+Next, create your restore object:
+
+$restore = & new Version_Restore('my_mod', 'my_mod_table', 
+                                 $my_mod->id, 'my_mod_class', 
+                                 'special_view');
+
+It is almost identical, however notice the third variable is the id of
+our item. Just like the approval list contructor, the last two
+parameters are optional. Since we used it the special_view function
+with our approval list, we might as well use it here as well.
+
+We have two links to set:
+
+$restore->setRestoreUrl($restore_link);
+// This is the url to our module that will restore the version
+
+$restore->setRemoveUrl($remove_link);
+// This is the url to our module that will remove one of the old
+// versions
+
+Now we just call grab our list:
+
+$content = $restore->getList();
+
+Layout::add($content);
+
+
+Restoring or Removing a Version
+-----------------------------------------------------------------------
+Like approval, check to make sure the user has the proper
+permissions. Now the easy part:
+
+$version = & new Version('my_mod_table', $_GET['version_id']);
+$version->restore();
+
+That's it*. To remove a version, just delete it:
+
+$version->delete();
+
+* Note: Sometimes you may not want ALL of the version to restore. For
+  example, if the restored item was in a specific order that has since
+  changed, you don't want to force it into the same position. In such
+  a case, edit a version object's "source_data" array before calling
+  the restore function.
+
+
+
+Flushing Old Versions
+---------------------------------------------------------------------
+If you want to remove all previous versions (unapproved or otherwise)
+you can just call the "flush" function like so:
+
+Version::flush('my_mod_table', $item_id);
+
+All previous versions will be removed from the database forever (be
+careful!). You should perform a flush after permanently deleting a
+version's source.
+
+
+Conclusion
+---------------------------------------------------------------------
+That wraps up the documentation for the Version module. Although the
+module requires a little foresight and planning, utilizing it can save
+you time and effort.
+
+If you have any questions, please email us at phpwebsite at appstate
+dot edu.

@@ -1,0 +1,525 @@
+30 October 2009
++ Fixed some bugs with user creation and editing with alternate authentication.
++ Hiding permissions and members in create group form
++ Fixed bug with users able to change password on alternate auth.
++ Usernames and passwords can not be changed on non local users
++ Added switch to settings to prevent admins from making new users
++ Most user settings have been made deity only.
++ Updated: templates/forms/settings.tpl, templates/forms/userForm.tpl
+
+Version 2.6.6
+---------------------------------------------------------------------
+13 August 2009
++ Graceful recovery from broken authentication scripts.
++ Authorization script made deity only
+
+11 August 2009
++ Fixed default groups on external authentication
+
+7 August 2009
++ Deleted auth scripts will update users under it to use local instead.
+
+23 July 2009
++ The user constructor was trying to load the authorization script on
+  failed users. Thanks Verdon.
+
+Version 2.6.5
+---------------------------------------------------------------------
+9 June 2009
++ Added French and Dutch as language choices
++ Updated conf/languages.php
+
+Version 2.6.4
+----------------------------------------------------------------------
++ install.sql was missing default_group column.
+
+Version 2.6.3
+-----------------------------------------------------------------------
+30 March 2009
++ Added icons for admin options under manage users and groups
++ Disabled active link in groups listing
++ Updated: img/deity.gif, img/delete.png, img/edit.png, man.gif
+img/key.png, img/members.png
+
+26 March 2009
++ Authorization scripts now have default group assignments. New
+  members will assigned to a group based on their authorization
+  method.
++ Removed default group by user or admin from settings.
++ Added ability to view users by whether or not they are in a
+  particular group.
++ Updated:
+  templates/forms/authorization.tpl
+  templates/forms/settings.tpl
+  templates/manager/users.tpl
+
+23 March 2009
++ Added pager caching to group listing
+
+10 March 2009
++ Display name may now not be the same as a user name
++ Extended user name error to include display name
++ Added password check to ldap script
+
+Version 2.6.2
+-----------------------------------------------------------------------
+9 February 2009
++ Moved error file to inc/
++ Blank passwords forbidden.
+
+28 January 2009
++ Error check added to cosign authorization.
+
+27 January 2009
++ php fiveasized the classes.
++ Added some needed error logging to user creation problems
++ Added ability for default user groups to be set for admin created
+  and newly joined users.
++ Fixed testing on addMembers. Previous code was nonsensical.
++ _user_group id gets set upon a user object save.
++ Updated: templates/forms/settings.tpl
+
+Version 2.6.1
+-----------------------------------------------------------------------
+11 December 2008
++ requireLogin now reroutes dependant on the user authorization
++ If the user's group is missing when they are updated, a new one is
+  properly created. Prior to the fix, a new group was created without an
+  assigned user id.
++ Added error message to my page if update goes bad.
+
+Version 2.6.0
+-----------------------------------------------------------------------
+17 November 2008
++ Fixed user installation in German. Special thanks to Hilmar for
+pointing this out.
+
+14 November 2008
++ Site contact copied from hub
+
+5 November 2008
++ Fixed delete link.
++ Current_User - Added "secured" function to Current_User. Works like
+  authorized but uses salted urls.
+
+31 October 2008
++ Put in a local_user setting in authorization. My Page disabled if
+  local_user is false.
+
+27 October 2008
++ Authkeys can be salted with special keys.
++ Added function verifySaltedUrl which verifies the authkey in the
+  current url.
+
+10 October 2008
++ Added display name to pager search
+
+2 October 2008
++ Reduced language list
++ Updated: conf/languages.php
+
+1 October 2008
++ Added option to use control panel fly out menu.
++ Dependency on new controlpanel.
++ Updated : templates/my_page/user_setting.tpl
+
+
+23 September 2008
++ Moved security log before error page call.
+
+17 September 2008
++ php 5 formatting added.
++ Session checks added to allow and authorized functions.
++ Fixed bug: activating and deactivating a user was not affecting the
+  group (Thanks Verdon).
++ Script tag permission added (will require update)
++ Current_User's init function will create a blank user object if no
+  id is sent to it.
+
+8 September 2008
++ Template tag named PANEL added. More descriptive than MODULES
++ Added user panel named css.tpl and made it default. The template
+  can be completely styled within css.
++ Updated: templates/usermenus/css.tpl
+
+13 August 2008
++ Fixed  giveItemPermission function. Wasn't saving group permissions
+  properly.
+
+12 August 2008
++ Icons substituted from admin links.
++ Fixed registerpermissions function. Was missing content parameter.
++ Updated: img/permission.png
+
+27 June 2008
++ Removed call to help module. Using new slider javascript instead.
+
+19 June 2008
++ Added cacheQueries to the user pager. Delete was dropping preferences.
++ Added setRequired to username and email in user form.
++ Changed user template submit button
++ Updated : templates/forms/userForm.tpl
+
+Version 2.5.0
+-----------------------------------------------------------------------
+5 June 2008
++ Added an error check to Permissions (Thanks Hilmar).
+
+4 June 2008
++ Commented password creation table row.
++ Users will now look for remove_user.php in all modules' inc/
+  directory in order to run the remove_user function.
+
+3 June 2008
++ Using pager's addSortHeaders in user and group listing
++ Updated: templates/manager/groups.tpl, templates/manager/users.tpl
+
+26 May 2008
++ Members' names alphabetized
+
+29 April 2008
++ Fixed: choosing 'Do not notify' after creating a user was failing.
+
+15 April 2008
++ Testing new user notification.
++ Fixed member listing  dropping names past 10.
++ Added random password generator on user edit form.
++ Removed reference from Action.php causing php notice.
++ Changed redundant static method call in Permission.
++ Added dash to allowed display name characters.
++ Added \pL to display name characters.
++ Updated:
+  templates/forms/memberlist.tpl, templates/forms/userForm.tpl,
+  javascript/generate/head.js
+
+Version 2.4.9
+-----------------------------------------------------------------------
+21 March 2008
++ Install.php and update.php are now creating groups for branch copied
+  deities.
+
+20 March 2008
++ Now uses second display() parameter in controlpanel::display to hold
+  my_page as current tab
+
+12 March 2008
++ My Pages are unregistered on module deletion (thanks Verdon).
+
+7 March 2008
++ Raised sql character limit in default username, display_name, and
+  group name installs.
+
+3 March 2008
++ Fixed bug with forbidden usernames
++ Added a function to group to remove its permissions upon deletion.
+
+20 February 2008
++ Removing banned user code. Let Access handle it.
+
+23 January 2008
++ bookmark won't return a user to a authkey page if their session dies.
+
+9 January 2008
++ Added missing table users_banned to update and install sql. *removed
+
+4 January 2008
++ Fixed bug #1850815 : unknown function itemIsAllowed in Permission-php
+
+14 December 2007
++ New functions in Users and Current_User to ban and unban users *removed
++ New panel tab and form for unbanning users. *removed
++ Updated: templates/forms/banned_users.tpl *removed
+
+Version 2.4.7
+--------------------------------------------------------------------
+10 December 2007
++ Dropped GLOBAL authorization from canChangePassword since it isn't
+  in the system yet.
+
+Version 2.4.6
+--------------------------------------------------------------------
+26 November 2007
++ Added error check to permission menu.
+
+12 November 2007
++ Error for missing user groups now reports user id.
+
+9 November 2007
++ Forgot password will work if CAPTCHA is disabled.
++ Updated: templates/forms/forgot.tpl
+
+29 October 2007
++ Using new savePermissions function instead of save.
+
+17 October 2007
++ Current_User was calling giveItemPermissions incorrectly.
+
+Version 2.4.5
+--------------------------------------------------------------------
+3 October 2007
++ RFE #1757530 added - admin can set reserved user name list.
++ Added search to groups listing.
++ Added missing pager navigation to groups listing.
++ Updated: templates/manager/groups.tpl
+
+27 September 2007
++ Added missing ability to activate and deactivate users.
++ Added error page should deactivated user attempt to log in.
++ Added link to settings page that re-registers module permissions.
++ Moved Activate and Deactivate commands to the Active Yes/No column.
++ Deities cannot be deactivated.
++ Fixed Vietnamese language abbreviation.
++ Updated: conf/error.php, conf/languages.php,
+  templates/forms/settings.tpl
+
+Version 2.4.4
+--------------------------------------------------------------------
+24 September 2007
++ Added check all buttons to permissions form.
++ Changed bad key error in the popup permission menu.
++ Updated: conf/error.php, templates/forms/permissions.tpl
++ Copy directory: javascript/check_all/
+
+21 September 2007
++ Removed the line item formatting for the permission radio buttons.
++ Updated: templates/forms/permission_pop.tpl
+
+20 September 2007
++ Session timeout on permission popup refreshes parent to login
+  screen.
+
+19 September 2007
++ Increase popup permission height.
++ A group can no longer be a member of itself.
++ Group file tidied. allow parameter renamed module for clarity.
++ giveItemPermission now checks each group for edit permission before
+  giving them item rights.
+
+Version 2.4.3
+--------------------------------------------------------------------
++ Applied patch for item #1795677. Uses user status not logged status
+for the User->allow function. Thanks Eloi.
+
+Version 2.4.2
+------------------------------------------------------------------
+30 August 2007
++ Added parameter to disallow which determines whether to check login.
+
+27 August 2007
++ Changed default disallow action on anonymous users. Now forwards
+  them to the login screen.
+
+22 August 2007
++ HOME tag no longer sent to template if logging in
++ Moved box around Default user menu for easier styling.
++ Updated: templates/usermenus/Default.tpl
+
+Version 2.4.1 -- 25 July 2007
+------------------------------------------------------------------
+30 July 2007
++ Fixed default authorization not getting saved.
++ Fixed default authorization was not working for new users.
+
+23 July 2007
++ default item id on permission check functions is now zero instead of
+  null. This will make checking permissions a little easier on new items.
+
+19 July 2007
++ Bug #1690657 - Changed group select js property to onclick instead
+  of onchange. Thanks singletrack.
+
+29 May 2007
++ Changed the language abbreviation for Danish
++ Updated files: conf/languages.php
+
+Version 2.4.0
+------------------------------------------------------------------
+26 April 2007
++ Changed authorize to use require_once instead of include (Thanks Daniel)
+
+24 April 2007
++ Bug 1705106 - Fixed install.sql typo
++ Permissions just close the popup window instead of displaying
+  message.
++ Moved include to prevent pre-defined error.
+
+18 April 2007
++ Added Forgot password and Forgot username functionality
++ Updated files: templates/forms/reset_password.tpl,
+  templates/forms/forgot.tpl
+
+
+17 April 2007
++ Started password reset and user name reminder options.
++ Added comments to user menu template to prevent extra characters
++ Updated files: conf/config.php, templates/usermenus/top.tpl,
+  templates/forms/forgot.tpl
+
+
+16 April 2007
++ Implemented RFE 1628318 - Remember me option on users module.
++ Rewrote logout functionality to work with remember me
++ Updated files: conf/config.php, templates/forms/settings.tpl,
+  templates/my_page/user_setting.tpl
++ Hitting user's index.php forwards to the 404 page
+
+
+11 April 2007
++ Removed redundant class calls in init.php
+
+
+6 April 2007
++ Changed default username size to 3
+
+5 April 2007
++ Updated translation functions.
+
+4 April 2007
++ Changed form names on login templates since both have ids and may
+  appear on same page.
++ Removed return by reference from Current_User::getUserObj
+
+2 April 2007
++ Changed popuppermission to echo error instead of using goback
+  function.
++ Fixed error code call in Permissions.php. Needed to call core code.
++ Added German translation files
+
+Version 2.3.2
+------------------------------------------------------------------
+
+13 March 2007
++ Found template typo that broke IE login.
++ Updated file: templates/user_main.tpl
+
+7 March 2007
++ Removed fake French translation.
++ Ordered permissions alphabetically (FR #1665183).
+
+5 March 2007
++ Changed control panel icon
++ Added error check to login.
++ isUser will now always return false if passed a zero id.
++ Added new function requireLogin that forwards a user to the login
+  screen
+
+
+Version 2.3.1
+-------------------------------------------------------------------
+23 February 2007
++ Added ability for user to choose their preferred editor.
++ Updated files: templates/my_page/user_setting.tpl
+
+
+Version 2.3.0
+-------------------------------------------------------------------
+22 February 2007
++ Removed redundant translate functions.
++ Removed addStyle call from my_page.php (Bug #1665576)
++ Removed unneeded content variable.
+
+13 February 2007
++ Added translate function calls in classes and my_page.php
++ my_page hides translation option if language defines disable selection
++ Raised core dependency.
+
+12 January 2007
++ Added a unrestricted only parameter to Current_User's allow and
+  authorize functions
+
+10 January 2007
++ Dropped references from some constructors
++ Added error check to setPermissions function: won't accept empty
+  group id
++ tidied (lower cased constants)
++ Changed id default to zero.
+
+9 January 2006
++ Removed unneeded function parameter on getGroups
+
+Version 2.2.2
+-------------------------------------------------------------------
+8 December 2006
++ Fixed typo causing branch installation failure on Postgresql
+
+7 December 2006
++ Set username to the same character size in both users table and
+  user_authorization.
+
+
+Version 2.2.1
+-------------------------------------------------------------------
+1 December 2006
++ Fixed a bug causing conflicts between user and group permissions.
+
+
+Version 2.2.0
+-------------------------------------------------------------------
+16 November 2006
++ Log in form returns null if the user box is set to none.
+
+13 November 2006
++ Removed permissions page link on new user creation
++ Added error check to prohibit permissions on new users
++ Added support for new Captcha core class (dependency on new core)
+
+10 November 2006
++ Removed constructions by reference.
++ When logging in, the user object would have its session information
+  noted, saved and then reloaded. During the save, all its variables
+  were double checked. This was over kill and caused several extra
+  database calls. Changed to only update and then load
+  permissions. Saves several steps.
+
+Version 2.1.1
+-------------------------------------------------------------------
+3 November 2006
++ Forcing usernames to be lowercase.
+
+Version 2.1.0
+-------------------------------------------------------------------
+26 October 2006
++ The username column in user_authorization was made into a primary
+  key.
++ The install process was rewritten to work with branch changes.
+
+Version 2.0.9
+-------------------------------------------------------------------
+10 October 2006
++ My Page was appearing regardless of user login status
++ Added allowUsername function to verify user name formating
+
+5 October 2006
++ Added reroute after language option is chosen.
+
+Version 2.0.8
+-------------------------------------------------------------------
+5 October 2006
++ Added locale choice on My Page
+
+
+RC3 and under
+-------------------------------------------------------------------
+2 October 2006
++ Fixed improper time function call on new user creation
+
+19 September 2006
++ Fixed authorization problems occuring after changing user name.
+
+18 August 2006
++ Removed unused about files
+
+11 August 2006
++ Form.php : Error in the permission form should be fixed
+
+10 August 2006
++ Permission.php - Fixed typo causing syntax error on permission call
++ permission_pop.tpl - fixed javascript error from changes in the form class
+
+26 July 2006
++ Changed user login box template
+
+14 July 2006
++ Fixed a problem with the permissions form made from the last Form
+  class update.
++ Added a getPermissionGroups function

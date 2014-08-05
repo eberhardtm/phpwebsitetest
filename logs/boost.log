@@ -1,0 +1,146 @@
+[2014-08-05 09:40]{HUB} Module - controlpanel : Installation file not implemented.
+[2014-08-05 09:40]{HUB} Module - controlpanel : No Control Panel links found.
+[2014-08-05 09:40]{HUB} Module - layout : Control Panel tabs not implemented.
+[2014-08-05 09:40]{HUB} Module - boost : Installation file not implemented.
+[2014-08-05 09:40]{HUB} Module - boost : Control Panel tabs not implemented.
+[2014-08-05 09:40]{HUB} Module - filecabinet : Created directory /var/www/html/testsite/images/filecabinet
+[2014-08-05 09:40]{HUB} Module - filecabinet : Control Panel tabs not implemented.
+[2014-08-05 09:40]{HUB} Module - search : Installation file not implemented.
+[2014-08-05 09:40]{HUB} Module - search : Control Panel tabs not implemented.
+[2014-08-05 09:40]{HUB} Module - miniadmin : Installation file not implemented.
+[2014-08-05 09:40]{HUB} Module - miniadmin : Control Panel file not implemented.
+[2014-08-05 09:40]{HUB} Module - users : Permissions file not implemented.
+[2014-08-05 09:40]{HUB} Module - access : Installation file not implemented.
+[2014-08-05 09:40]{HUB} Module - access : Created directory /var/www/html/testsite/files/access
+[2014-08-05 09:40]{HUB} Module - access : Control Panel tabs not implemented.
+[2014-08-05 09:40]{HUB} Module - access : Installing - Users
+Importing SQL install file.
+Import successful.
+Processing installation file.
+<hr />
+Registering module to core.
+Registration successful.
+Permissions table created successfully.
+My Page registered to Users module.
+Users successfully registered to Users.
+Registering other modules to this module.
+Registering this module to other modules.
+Installing - Control Panel
+Importing SQL install file.
+Import successful.
+Registering module to core.
+Registration successful.
+Control Panel tabs created for controlpanel.
+Control Panel successfully registered to Control Panel.
+Registering other modules to this module.
+Control Panel tabs created for users.
+Control Panel links created for users.
+Users successfully registered to Control Panel.
+Registering this module to other modules.
+Permissions table created successfully.
+Control Panel successfully registered to Users.
+Installing - Layout
+Importing SQL install file.
+Import successful.
+Processing installation file.
+Layout settings updated.
+Registering module to core.
+Registration successful.
+Registering this module to other modules.
+Control Panel links created for layout.
+Layout successfully registered to Control Panel.
+Permissions table created successfully.
+My Page registered to Users module.
+Layout successfully registered to Users.
+Installing - Boost
+Registering module to core.
+Registration successful.
+Registering this module to other modules.
+Control Panel links created for boost.
+Boost successfully registered to Control Panel.
+Permissions table created successfully.
+Boost successfully registered to Users.
+Installing - File Cabinet
+Importing SQL install file.
+Import successful.
+Processing installation file.
+files/multimedia directory created successfully.
+files/filecabinet/ directory created successfully.
+files/filecabinet/incoming directory created successfully.
+Creating image directory for module.
+Registering module to core.
+Registration successful.
+Registering this module to other modules.
+Control Panel links created for filecabinet.
+File Cabinet successfully registered to Control Panel.
+Permissions table created successfully.
+File Cabinet successfully registered to Users.
+Installing - Search
+Importing SQL install file.
+Import successful.
+Registering module to core.
+Registration successful.
+Registering this module to other modules.
+Control Panel links created for search.
+Search successfully registered to Control Panel.
+Permissions table created successfully.
+Search successfully registered to Users.
+Registered to Key.
+Installing - MiniAdmin
+Registering module to core.
+Registration successful.
+Registering this module to other modules.
+Permissions file not implemented.
+Installing - Access
+Importing SQL install file.
+Import successful.
+Creating files directory for module.
+Registering module to core.
+Registration successful.
+Registering this module to other modules.
+Control Panel links created for access.
+Access successfully registered to Control Panel.
+Permissions table created successfully.
+Access successfully registered to Users.
+Installation complete!
+[2014-08-05 09:41]{HUB} Module - block : Installation file not implemented.
+[2014-08-05 09:41]{HUB} Module - block : Control Panel tabs not implemented.
+[2014-08-05 09:41]{HUB} Module - menu : Created directory /var/www/html/testsite/images/menu
+[2014-08-05 09:41]{HUB} Module - menu : Control Panel tabs not implemented.
+[2014-08-05 09:41]{HUB} Module - pagesmith : Control Panel tabs not implemented.
+[2014-08-05 09:41]{HUB} Module - pagesmith : Installing - Block
+Importing SQL install file.
+Import successful.
+Registering module to core.
+Registration successful.
+Registering this module to other modules.
+Control Panel links created for block.
+Block successfully registered to Control Panel.
+Permissions table created successfully.
+Block successfully registered to Users.
+Installing - Menu
+Importing SQL install file.
+Import successful.
+Processing installation file.
+Default menu created successfully.
+Creating image directory for module.
+Registering module to core.
+Registration successful.
+Registering this module to other modules.
+Control Panel links created for menu.
+Menu successfully registered to Control Panel.
+Permissions table created successfully.
+Menu successfully registered to Users.
+Registered to Key.
+Installing - PageSmith
+Importing SQL install file.
+Import successful.
+Processing installation file.
+Registering module to core.
+Registration successful.
+Registering this module to other modules.
+Control Panel links created for pagesmith.
+PageSmith successfully registered to Control Panel.
+Permissions table created successfully.
+PageSmith successfully registered to Users.
+Installation complete!

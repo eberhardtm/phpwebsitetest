@@ -1,0 +1,76 @@
+All core files and modules will have instructions within this
+directory. User documentation is currently absent.
+
+Access - instructions on using shortcuts and the access module (not complete)
+
+bbcode - tells you how to use bbcode in phpwebsite
+
+Cache_Lite - instructions on how to cache content
+
+Clipboard - instructions for using the clipboard module (not complete)
+
+Converting_Modules - explains how to convert 0.x modules to 1.x
+
+Cookie - directions for using the Cookie class
+
+CREDITS - people we'd like to thank
+
+Database_Class - developer directions for using the Database class
+(needs updating but fairly sound)
+
+DB_Pager - instructions on creating pages of data via database
+interaction
+
+Demographics - Describe the demographics module. Incomplete
+
+Developer_Rules - rules to follow for creating phpwebsite modules
+
+Editor - instructions on using the wysiwyg editors in your
+installation
+
+Forms - Instructions for using the Forms core class.
+
+INSTALL - very brief explanation on how to get started installing
+phpwebsite. Should the need arise, it will be expanded upon.
+
+Known_Errors - these are errors that may escape phpwebsite's ability
+to filter them. If something is really going wrong, it should be
+listed here. Pretty scarce info at this point.
+
+Language - Tells you how to develop i18n code.
+
+LICENSE - Our license, read it, learn it, live it.
+
+MiniAdmin - Instructions on using MiniAdmin, a small context sensitive
+menu, in your module.
+
+Mod_Rewrite - explains how mod_rewrite works. Apache required
+
+Module_Development - a "work-in-progress". Eventually will be a
+step-by-step guide to writing a module.
+
+My_Page - very brief instructions for utilizing My Page, a user tab
+under the control panel.
+
+README - that's me!
+
+Search - Brief directions for using the search in your module.
+
+Settings_Class - Explains how to use the Settings class in your
+module. Lets you save and retrieve basic module settings from one place.
+
+SmartTags - Explains how smarttags work and how to use them
+
+template - Basic explanation of how templates work in phpwebsite
+
+test.php.text - allows you to test code with the basic core running
+
+Theme_Creation - Directions for creating a theme in phpwebsite 1.0
+
+Using_Javascript - instructions on using the javascript function in
+your code
+
+Version - developer instructions for using versioning in your
+modules. Can be scary. Write your module first then come back to it.
+
+WYSIWYG - condensed version of Editor.txt

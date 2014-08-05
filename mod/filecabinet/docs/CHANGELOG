@@ -1,0 +1,1022 @@
+19 November
++ Added some options to the lightbox view (verdon)
+
+18 November
++ Added Lightbox support as an option for image folders (verdon)
+
+7 October 2009
++ Order fckeditor files on popup
+
+15 Sept 2009
++ Added htmlspecialchars on titles for docs, images, media. Single quotes can wreck js
++ updated windows media filter
++ Updated templates/filters/windows.tpl
+
+Version 2.2.7
+--------------------------------------------------------------------------
++ Added trim to ffmpeg file directory
++ Added description to search for files
++ FCKeditor media insertion had problems with any media other than
+  YouTube embeds. New script was written to place a bookmark image for
+  the media which is replaced on a click via jquery ajax.
++ updated files: javascript/fck_video_replace,
+  javascript/fckeditor/head.js,
+  templates/filters/media/mediaplayer.swf
+  templates/filters/media/yt.swf
+
+Version 2.2.6
+--------------------------------------------------------------------------
++ Fixed bug with editing Multimedia. Reported by alar.
++ Fixed bug with File Cabinet in fckeditor not loading properly.
+
+Version 2.2.5
+---------------------------------------------------------------------------
++ Fixed bug that displayed error message on document upload.
++ Proper error message now on document uploaded to unwritable
+  directory
++ Directory check on unwritable directory prevents upload link
+
+Version 2.2.4
+---------------------------------------------------------------------------
+30 March 2009
++ Error checking added to document upload.
++ Fixed multimedia folder pager.
+
+25 March 2009
++ Added file type limits to fckeditor
+
+23 March 2009
++ Added method for fixing document directories
++ Added file search to folder pager
++ Added document FCKeditor interaction
++ Cleaned up interface
++ Updated:
+javascript/fckeditor/head.js
+templates/fckeditor.tpl
+templates/fckdocuments.tpl
+templates/fck.css
+templates/fckimages.tpl
+templates/fckfolders.tpl
+templates/folder_list.tpl
+templates/settings.tpl
+
+
+20 March 2009
++ Started building FCKeditor interaction
++ Updated:
+img/folder.gif, javascript/fckeditor/*
+templates/fck.css, templates/fckeditor.tpl, templates/fckfolders.tpl,
+templates/fckimages.tpl
+
+Version 2.2.3
+---------------------------------------------------------------------------
+25 February 2009
++ Fixed document delete link
+
+Version 2.2.2
+---------------------------------------------------------------------------
+10 February 2009
++ Fixed edit icon in document view. Needed to be salted.
++ Small template changes (same as yesterday)
+
+9 February 2009
++ Added error check to prevent possible divide by zero error.
++ Resized mime type icons
++ Changed the document download windows. Simplified.
++ Updated: img/mime_types/*
+templates/document_download.tpl, templates/file_view.css,
+templates/multi_doc_download.tpl
+
+
+30 January 2009
++ Fixed image edit link.
+
+29 January 2009
++ Added pptm to known types.
+
+22 January 2009
++ Fixed permission checks on folders.
+
+Version 2.2.1
+---------------------------------------------------------------------------
+19 December 2008
++ Fixed folder deletion.
+
+17 December 2008
++ Clipped documents and images will now have full pathing.
+
+11 December 2008
++ Fixed document smarttag
+
+Version 2.2.0
+---------------------------------------------------------------------------------
+7 November 2008
++ Folder item view watches title length and abbreviates when
+  necessary. 
++ Added style component to item title in folder view.
++ Style added to reduce font size for item title.
++ Added setting to force thumbnail dimensions on all previously saved
+  thumbnails.
++ Added getTitle function to File_Common with size reduction option.
+
+5 November 2008
++ Checking for image existence prior to display in file manager.
++ Patch #2067859 - titles added to pinned folders. Thanks Tommy.
+
+27 October 2008
++ File Cabinet permissions not required to pick items from menu.
++ File manager windows verify salted authkeys.
++ File manager allows dev to designate a reserved folder. Users will
+  be able to access that folder only.
++ Developer can force an upload width and height. Images will be
+  resized to those dimensions before saving them.
++ Fixed force resize option.
++ Updated: 
+  javascript/clear_file/body.js, default.php, head.js
+  javascript/update_file/head.js, default.php
+
+8 October 2008
++ Made File_Assoc::parentLinked function a little more robust.
+
+7 October 2008
++ Fixed pain in the butt carousel display problem.
+
+1 October 2008
++ Fixed multimedia popup
++ Added faster classify options
++ Updated: templates/classify_list.tpl
+
+17 September 2008
++ Added commercial use message to readme for media player
++ Error check added to parse function.
++ Rewrote clip code for new clipboard functionality.
+
+8 September 2008
++ Trying alternate clipboard option.
++ Classify looks in media types prior to documents now.
++ Different javascript link format in clear_file.
++ Updated: javascript/clear_file/body.js
+
+13 August 2008
++ Downloaded documents now increment download count.
++ Document folder view shows how many times a document has been
+  downloaded.
++ Switched sort headers over to new pager format.
++ Updated: templates/file_list.tpl
+
+12 August 2008
++ Removed cropped from install.sql and added vertical and num_visible
+  columns.
++ Changed admin links to icons.
++ Key is now deleted with folder.
++ mod_rewrite format changed over.
++ Update: templates/folder_list.tpl, templates/style.css, img/add.png
+
+
+1 August 2008
++ added metacafe as embed type
++ Changed 'video' to 'media' in wording
++ Thumbnails of embeds prefixed with embed type to prevent overlap
++ Flickr renamed User since group ids do not work.
+
+15 July 2008
++ Added patch #1939151 by Eloi George. Removed redundant code.
++ Added patch #1939146 by Eloi George. Adds setPlaceholderMaxWidth and
+  setPlaceholderMaxHeight functions.
+
+2 July 2008
++ confirm message restored to pick_file script.
++ Updated: javascript/pick_file/head.js
+
+23 June 2008
++ Removed cropped column from file_assoc; not needed, file_type covers
+  it
++ Storing carousel settings in file_assoc
++ Carousel settings can be made on file manager post
++ Image crop association deletes added to image delete
++ Added reference to media embedd function to allow functioning with
+  php 4
++ jCarousel is default view in File Manager
++ Updated: javascript/jcaro_lite/head.js, javascript/pick_file/
+  javascript/update_file/head.js, templates/style.css,
+  templates/file_manager/carousel_pick.tpl
+  templates/settings.tpl
+
+20 June 2008
++ Not making image title required
++ Made placeholder image clickable.
++ Fixed bug introduced with placeholder link.
+
+19 June 2008
++ Removed unsigned integers from update.php
++ Media resizing is working properly again.
++ Added a setRequired to Image title.
++ Changed youtube import to work properly with XMLParser fixes.
++ Fixed bad tag in document list view
++ Updated: templates/file_list.tpl
+
+13 June 2008
++ Replaced next and previous picture links with png arrows
++ Added a warning message if a folder is made private after a folder
+  slideshow is created.
++ application/msword loads the document.png now instead of the
+  text.png
++ Move the jcaro javascript into its own function so it could be
+  called by the update script in File Manager.
++ Removed width from the horizontal carousel
++ Updated: conf/icons.php, javascript/update_file/head.js,
+  templates/carousel_horz.tpl, templates/carousel_vert.tpl,
+  templates/ss_box.tpl, templates/style.css
+
+11 June 2008
++ Can now set thumbnail dimensions from settings
++ All thumbnail setting are derived from settings page
++ Viewing images in a folder can now be viewed using jcarousel lite.
++ Added settings to control jcarousel lite
++ Adding dimensions to thumbnails
++ Updated: javascript/jcaro_lite/*
+           javascript/shutter/*
+           templates/carousel_horz.tpl,
+           templates/carousel_vert.tpl, templates/settings.tpl,
+           templates/style.css
+
+Version 2.1.0
+---------------------------------------------------------------------------------
+5 June 2008
++ Added fourth parameter to importPost : file_prefix. Prefixes the
+  saved file with submitted characters.
+
+3 June 2008
++ Added conditional to prevent similiar resize from overwriting one
+  another.
++ Added new menu to pick resize method on image.
++ File_Assoc class now tracks width, height, and cropped status.
++ Updated: javascript/pick_file/head.js,
+           javascript/pick_file/scripts.js,
+           templates/style.css,
+           templates/file_manager/folder_content_view.tpl,
+           templates/file_manager/resize.tpl
+
+30 May 2008
++ Error check added to resize function.
++ Rewrote image resizing to avoid square images.
+
+23 May 2008
++ Filecabinet will now resize media as well as images.
++ Added type to javascript scripts
++ Updated: javascript/pick_file/head.js,
+           javascript/pick_file/scripts.js
+           javascript/update_file/head.js
+
+
+21 May 2008
++ When checking the mime type, the extension is forced into lowercase.
+
+29 April 2008
++ Hiding some elements if the user doesn't have file rights.
++ Updated: templates/file_manager/placeholder.tpl
+
+25 April 2008
++ Fixed typo in Image:makeThumbnail
++ Added ability to move files to other folders.
++ Updated: templates/document_edit.tpl, templates/image_edit.tpl,
+  templates/multimedia_edit.tpl
+
+24 April 2008
++ Revamped embedded code
++ Added flicker slide shows.
++ Fixed module restrictions on folders (I think)
++ Updated: templates/edit_folder.tpl, templates/embed_edit.tpl
++ Removed: templates/filters/youtube.tpl, inc/embed/youtube.php
+
+17 April 2008
++ Can change module restriction per folder.
++ Added moduleLimit function to restrict folder view in file manager.
++ Some notices fixed
++ Updated: templates/edit_folder.tpl
+
+11 April 2008
++ Image folders can be set to control default image default size.
++ Fixed an error call.
++ Updated: templates/edit_folder.tpl, templates/style.css
+
+9 April 2008
++ Popup images can be set to navigate among other images in the
+  folder.
++ getThumbnail handles a resized image now.
++ Popup windows all the same size.
++ Update: templates/image_view.tpl, templates/settings.tpl
+
+8 April 2008
++ Added getThumbnail function to File_Assoc
++ Image's getThumbnail can be linkable.
++ Increased default thumbnail size slightly.
+
+Version 2.0.1
+----------------------------------------------------------------
+2 April 2008
++ Updated youTube import.
++ Removed unused code.
+
+Version 2.0.0
+----------------------------------------------------------------
+19 March 2008
++ Update nulls the url column for those marked parent
++ Update drops parent_id column.
++ Resized images don't automatically link to parent anymore. Has to be
+  requested by module.
++ Udpated: templates/settings.tpl
+
+18 March 2008
++ Fixed bug in video thumbnailing.
+
+7 March 2008
++ Fixed fc_convert table check typo.
++ File classification made deity only
+
+5 March 2008
++ Extra permission checks added.
++ User must have rights to add folders or upload new files.
+
+26 February 2008
++ Small edit to classify template for error messages.
+
+22 February 2008
++ Fixed image popup link address
+
+21 February 2008
++ Fixed multimedia popup outside of mod_rewrite (thanks Verdon)
++ Added Italian translation
+
+20 February 2008
++ Settings tab is now deity only
++ Fixed instances of error messages not appearing on upload
++ Enforcing folder permissions on item views.
++ Moved some functions out of Cabinet to Forms hopefully to save some
+  memory.
++ Allowed file types now look at extensions. Mime types are checked by
+  the new PHPWS_File methods.
++ Deities can now choose the allowed file types from a new tab.
++ Media, Images, Docs pull their allowed types from the phpws_settings
+  now.
++ Changed over mime checking to new phpws_file methods.
++ Classify working with new file type code.
++ Clip ability now requires fc permission.
++ Video types moved to config.php. video_types.php removed
++ known_types.php file added to inc directory.
+
+8 February 2008
++ Broke out image resize so default parent link setting would work
+  again.
++ Caption function grabs tag with linked status sent now.
++ Permissions checked against file cabinet now for posting files.
++ Different template used for single document download
++ Directory checks for writing files combined into one File_Common
+  function.
++ Different placeholder graphic for those without permissions.
+
+
+7 February 2008
++ Added ability to force users to resize their images.
++ convertMediaToFileAssoc added.
++ Added getSource function to return an association's source object
++ Added ability for dev to suppress image captions.
++ imageOnly can now be set to suppress random and folder options
++ documentOnly can now suppress folder option
++ converting images is now tracked in new table
++ Fixed bug on type locking.
++ Changing file_assoc to load the source on initialization
++ Added _file_path parameter to File_Assoc which is set when loading
+  source.
++ Fixed '=' instead of '==' error in Folder.php
++ Added missing pinTags function to Multimedia.
++ Rewrote some of getTag to use source
+
+6 February 2008
++ Combined and pared style sheets.
++ Fixed convert function to use proper variable
++ Style changes to admin document form
+
+5 February 2008
++ Added duration and embedded column to multimedia table.
++ File deletions moved to File_Common (commonDelete) to reduce overlap
++ Each file type deletes it file association as well.
++ Resize code is now using the define for its directory.
++ Folder deletion now deletes any associations.
++ Size default in File_Common is zero not null.
++ Error check added to pickFile function.
++ Added the option to add embedded videos to multimedia folders.
++ resizePath broken into getResizePath and makeResizePath
++ Removed some unnecessary code.
++ loadVideoDimensions is now just loadDimensions.
++ Resize directory is now in the folder containing the image. Removed
+  define from config file.
++ Added youtube filters.
+
+1 February 2008
++ getFile returns actually object. getTag returns just content.
++ getResize function can be set to return with a link to the parent
+  image.
+
+30 January 2008
++ Added image, document, media only commands to isolated what is
+  allowed to place.
++ Fixed the clip functionality
++ Fixed the edit folder functionality
++ Added image captioning
++ Added function to convert images to file associations for module
+  conversion.
++ Added parameters to importpost to ignore empty file submissions and
+  to ignore folder ids if used outside filecabinet.
++ Image descriptions are now encoded and basic emphasis and bold tags
+  are allowed.
++ All upload and edit links should be correct now.
++ Removed border from image tag.
++ New icon for shockwave files.
+
+
+28 January 2008
++ getFile has second parameter to forgo style from file cabinet
++ Increase document upload size.
++ Fixed file assoc's image resize code.
++ Fixed button vs link in file cabinet's admin screens
++ Lightened border on image thumbs
++ Fixed the button links in the admin screens
++ Folder title opens the folder edit page if permissioned
++ If a folder is empty or private, the folder actions are lightened
+  with new titles.
++ Added shockwave in multimedia.
++ Multimedia wasn't echoing errors from uploading
+
+25 January 2008
++ Restructured file_assoc - no longer uses tag variable
+ ( Resize is broken now, will fix next commit. )
++ Removed one set of thumbnail dimension defines
++ Added file checks to file types. FC will not let you save a
+  new, duplicate file in the same directory.
++ Document folder option added.
++ A blank tag from a file_assoc will delete that file_assoc.
++ Documents sorted by title not file name.
++ Removed no_kids variable. Not used now that resizes aren't saved to
+  database.
++ Fixed typo in image that created thumbnails.
++ mp3 and flash videos now use the media filter only.
++ Fixed some problems with the media upload form.
++ Added missing fid variable from pick_file script
++ Dumping icons
+
+23 January 2008
++ Random image and slideshow options added to file manager's image
+  screen
++ Removed imageTags function from folder
++ Current images and folder options are highlighted now.
++ All image resizes are performed when an image is updated.
+
+
+22 January 2008
++ Added resize directory creation.
++ Turning cacheOff on javascript popups. Allows thumbnail refresh.
++ Renamed menu function to openFileManager to match operation name.
++ If an image is deleted, its resize directory is as well. Also
+  removed old parent/child deletion logic.
++ Added a degrees parameter to Image's rotate function.
++ module and itemname variables and functions removed from image
+  manager.
++ Old method of choosing images removed from Image Manager.
++ Starting (but not completed) resize images function for updates.
+
+
+19 January 2008
++ Added logged error message if a folder can not be created.
++ Checking for multimedia directory creation again on update. Could be
+slipping by on some updates.
+
+17 January 2008
++ Rewrite of File Cabinet in progress.
++ all boost directories need replacing
+
+10 December 2007
++ Removed "echo '1'" from Image.php. Thanks again verdon.
+
+Version 1.4.1
+-----------------------------------------------------------------------
++ Fixed missing table column (thanks verdon)
+
+Version 1.4.0
+-----------------------------------------------------------------------
+4 December 2007
++ Fixed printErrors function in File_Common.
++ If pear return application/octet-stream as the mime type, file
+  common tries to use mime_content_type to verify.
+
+3 December 2007
++ Fixed delete link in document listing.
++ If no title is entered for a document, it uses the file name.
+
+29 November 2007
++ Delete link in image selection works again.
++ Moved scripts out of head.js and into their own files.
++ Updated: javascript/folder_contents/head.js,
+           javascript/folder_contents/scripts.js,
+           javascript/pick_image/head.js,
+           javascript/pick_image/scripts.js
+
+
+26 November 2007
++ Fixed multimedia generic thumbnail copying.
+
+12 November 2007
++ Added image height limits to standardize the image manager selection
+screen.
++ Updated: templates/style.css
+
+9 November 2007
++ Added a crop threshold to the cropping function. If the pixel
+  difference between the old image and the new is less than the
+  threshold, the crop will not occur.
++ Images makeThumbnail function will now properly copy the image to
+  the tn directory if it is under the thumbnail size.
++ Updated: templates/settings.tpl
+
+25 October 2007
++ Fixed clear Image link. Wasn't returning clear image to correct
+  size.
++ Updated: javascript/clear_image/body.js, javascript/clear_image/head.js
+
+Version 1.3.0
+---------------------------------------------------------------------
+4 October 2007
++ Fixed problems with presizing images.
++ Fixed permissioning problems with folders.
++ Added delete image option to image viewer.
++ Updated: templates/manager/pick.tpl, templates/style.css
+
+3 October 2007
++ Added module_created column to folders table to track which module
+  made the folder.
++ Fifth parameter added to Cabinet::imageManager function. If true,
+  then the image manager will only show folders created by the current
+  module.
++ Users can access image folders without having to have File Cabinet
+  permission.
++ Private folders give a warning instead of a 404.
++ Can now set whether general user folder views will show resized
+  images along with their parents.
++ Folders are private by default now.
++ Folder title in list view is linkable as well as icon.
++ Images can be made to link to their folder.
++ Clip link won't show for anonymous users viewing a folder.
++ Added code to pick_image to prevent it from being called statically.
++ Updated: javascript/pick_image/head.js, templates/folder_list.tpl,
+           templates/settings.tpl, templates/style.css
+
+
+2 October 2007
++ Using new scaleImage and cropImage functions in File.
++ Added missing column thumbnail to multimedia table in update.php.
++ Image dimension limits compare against only one value now by
+  default.
++ Uploading resizes using just one value now.
++ User can rotate images on edit.
++ File_Common was not using correct variable to pull errors.
++ Images with awkward ratios resize and thumbnail better.
++ Trying defined widths and heights for thumbnail listing.
+
++ Updated: templates/image_edit.tpl, templates/settings.tpl,
+  templates/style.css
+
+28 September 2007
++ Increased file_name size beyond 50 because people give files crazy
+  long names.
++ More work on thumbnail changes including audio files.
++ Added dropExtension function to File_Common.
++ Added get extension function to Image.
++ Added some error codes to help with video thumbnail debugging.
+
++ Updated: sql - increased file_name size
+                 thumbnail column to multimedia
+
++ Updated: conf/error.php, templates/filters/flash/filter.php
+
+24 September 2007
++ Added code to change thumbnails on multimedia files.
++ Updated flowplayer
++ Private folders are not viewable to the anonymous public.
++ Added function to Cabinet to get all file size limitations.
++ The settings form now lists all the above limitations.
++ Added ability to force a size to prewriteResize
++ Going to have icons thumbnails for audio. Not done yet.
++ Multimedia icon's file size is checked. If zero, replaced by the
+  default.
++ Increased default thumbnail size.
++ Thumbnail should overlay on video properly now.
++ Added a short doc about ffmpeg
+
++ Updated: conf/config.php, templates/filters/flash.tpl
+           templates/file_list.tpl, templates/multimedia_edit.tpl,
+           templates/settings.tpl, templates/style.css
+           templates/thumbnail.tpl
+
++ Copy directory - templates/filters/flash/
+
+
+21 September 2007
++ Changed install to print 'incoming' instead of 'classify' as the
+  directory name. Was confusing.
++ Added small file type icons for list view.
++ File name in list view is now a direct link to the document.
+
++ *** Note: update needs to copy img/icons/ directory ***
+
+Version 1.2.2
+--------------------------------------------------------------
+18 September 2007
++ Added patch #1776068 to allow setting default no image size.
+
+17 September 2007
++ Fixed mislabeled error messages in File_Common
++ Added option to resize a large image on upload.
++ Added option to turn an image 90 degrees clockwise or counter clock
+  wise or 180 degrees on upload.
++ Increase image upload size to fit new options.
++ Moved resize function to Core File class.
+
+Updated: templates/image_edit.tpl
+
+
+Version 1.2.1
+--------------------------------------------------------------
+27 August 2007
++ Changing image file rights after upload and resizing to 644
++ Document permissions written as 640
+
+26 August 2007
++ Fixed update script. Was missing filecabinet_pins table creation.
+
+23 August 2007
++ Option add to auto link child resized images to parent.
++ Fixed bug where child images were not getting loaded on image
+  selection.
++ File cabinet was pulling a file from the mod directory instead of
+  locally. I think I misread the function.
++ Resize the image edit window to account for thumbnail.
++ Image selection would get corrupted by linked images. Fixed.
++ Updated: templates/settings.tpl
+
+Version 1.2.0 -- 26 July 2007
+-------------------------------------------------------------
+6 August 2007
++ changed folder icon link back to '#'. Would not work on some systems
+  (IE)
++ clear image now checks max height and width display
+
+1 August 2007
++ new installs of filecabinet were failing because Boost hadn't
+  created the files directory yet
+
+26 July 2007
++ Added default classify directory
++ Increased popup size for file forms
++ Removed K (kilobyte) from error file.
++ Added missing video png to update
++ Oversized files were passing through without warning. Added error
+  notifications.
++ Added human readable byte counts (kilo and mega)
++ Fixed multimedia table sql file
++ Added classify directory creation to update
++ Path for multimedia directory in update was wrong
++ Added boost directories for branch sites.
+
+24 July 2007
++ Fixed image url text field in edit form. Added default http://
++ Made description textarea smaller.
++ Updated files: templates/image_edit.tpl
+
+20 July 2007
++ Pinned image folders only show original thumbnails
++ Added minimum pop up window size
++ Added alt tag to no image
++ Fixed clear image link
++ Updated mp3player
++ Added missing branch directory to copy process in 1.1.0 update
++ Updated file: javascript/clear_image/head.js, conf/config.php
+
+19 July 2007
++ Added missing "return true" to the install.php
++ Added upper limit on image dimension should a module have a high
+  tolerance for its size.
+
+18 July 2007
++ Subbed the current url for the # in the src for the folder onclick
+  link. For some pain-in-my-ass reason, firefox loads the root
+  regardless of the return false on the end.
++ javascript altered. Resampled image was using thumbnail image. I
+  thought I had fixed that. Guess not. Also plugged in width and height
+  just in case.
++ Updated files: javascript/pick_image/head.js
+
+16 July 2007
++ Removed files: edit_embed.tpl
+
+2 July 2007
++ Moved video types into video_types.php config file. Need to move
+  filter detection into a config as well.
++ multimedia folder will be placed in files/multimedia/ not
+  files/filecabinet/multimedia/
++ Each folder tab now checks the write status of each directory
+  separately.
++ added extra multimedia type to icon check
++ Added install.php to create multimedia folder.
++ Updated files: conf/video_types.php
+
+28 June 2007
++ added translation to tallied item count. also changed "items" to
+  "images"
++ Folder now loads files in filename order.
++ Added checkbox that allows you to hide child images
++ Deleting a parent image makes all child images parents.
++ Changed wording on image linking to urls
++ Updated files: javascript/folder_contents/head.js,
+                 javascript/pick_image/head.js
+                 templates/image_folders.tpl, templates/style.css
+
+
+
+27 June 2007
++ File Cabinet's Image Manager no longer shows small thumbnail.
+  Instead, it shows a full image set to the current dimension limits.
++ Cabinet - added error check
++ Image - getTag function now allows an "id" parameter that will be
+          added to the image tag (i.e. id="css-id-name")
++ Changed "no image chosen" graphic.
++ Updated files: img/no_image.png, conf/config.php
+
+
+
+11 June 2007
++ Added audio thumbnail
++ Updated files: img/audio.png
+
+8 June 2007
++ Added audio filter for mp3
++ Wrote update scripts.
++ Added missing new columns to image table in install.sql
++ Added multimedia.sql file for update to 1.1.0
++ Added ability to delete incoming files.
++ Added directory permission checks to classify.
++ Classify directory can now be set in fc settings.
++ Created classify override in config.php file.
++ Updated files: conf/config.php, templates/settings.tpl
++ Updated locale file.
+
+
+7 June 2007
++ Removing the embedded code. Decided it wasn't useful.
+
+6 June 2007
++ Started embedded functionality code.
++ Updated files: conf/embedded.php, templates/edit_embed.tpl,
+                 templates/embedded.tpl (removed later),
+                 templates/embedded/youtube.tpl (removed later)
+
+
+1 June 2007
++ Added link to delete multimedia files
++ Added edit link for multimedia files
++ Thumbnails now clickable to open video in popup window.
++ Tidy in Image.php
++ Updated files: config/config.php, templates/image_view.tpl,
+                 templates/multimedia_view.tpl,
++ Removed view.tpl
+
+
+31 May 2007
++ Added option to use ffmpeg to create thumbnails
++ Restructured settings form.
++ Updated files: templates/settings.tpl
+
+
+Version 1.1.0 Unreleased
+-------------------------------------------------------------
+
+
+30 May 2007
++ Added the ability to clip multimedia files to content.
++ Added multimedia max upload size to settings.
++ getTag function works in the Multimedia class for flash video files.
++ Updated files: templates/settings.tpl, templates/filters/flash.tpl,
+                 entire filters/flash/ directory.
+
+
+29 May 2007
+>> NON-DEVELOPERS!!! DO NOT UPDATE STABLE CODE WITH CHANGES! <<
+
++ Added Multimedia folders
++ Added Multimedia files.
++ Added ability to classify uploaded files.
++ Removed itemname variable from Document_Manager
++ Created setDirectory function for File_Common. Assures trailing
+  forward slash on directory name.
++ Commented out ext variable in File_Common. Doesn't appear to be in
+  use.
++ Fixed some error messages in File_Common.
++ Added multimedia options in File_Common.
++ Added writable directory check before allowing new folders to be
+  created.
++ Clip option moved outside edit_folder permissions when viewing images.
++ Added option to link images.
++ Added option for resized images to link to their parent, full-size
+  image.
++ Moved edit and delete links into their own function in Image
+
++ Database changes
+  o Added parent_id and url column to image
+  o Added new multimedia table.
+
++ Updated files:
+  conf
+  ----------------------------
+  config.php, error.php
+
+  templates
+  ---------------------------
+  embedded/quicktime.tpl, filters/flash.tpl, filters/quicktime.tpl,
+  filters/realplay.tpl, filters/windows.tpl, manager/pick.tpl,
+  classify_file.tpl, classify_list.tpl, image_edit.tpl,
+  multimedia_edit.tpl, multimedia_grid.tpl, style.css
+
+17 May 2007
++ Fixed authorized check in unpinning folders.
++ Added ability for image to be made linkable to urls and source
+  images after resizing.
+
+Version 1.0.2
+---------------------------------
+15 May 2007
++ Added missing key_id column to folders table.
+
+Version 1.0.1
+---------------------------------
+3 May 2007
++ Fixed several bugs popping up in IE7
++ Fixed bug if a user picks an image that has already been resized.
++ Added choice (via config) to make extra resized images instead of previous
++ Added close button to image manager.
++ Updated files : templates/style.css, templates/image_folders.tpl,
+                  templates/javascript.tpl,
+                  templates/manager/javascript.tpl,
+                  javascript/folder_contents/head.js,
+                  javascript/pick_image/body.js,
+                  javascript/pick_image/head.js,
+                  conf/config.php
+
+2 May 2007
++ Changed variable name in javascript file to work under IE
++ Updated files javascript/folder_contents/head.js
+
+Version 1.0.0
+---------------------------------
+24 April 2007
++ Fixed folder permissioning
++ Fixed problem with thumbnails for long or tall images
++ If a folder's directory is already created, fc doesn't try to create
+  a new one, preventing an error message and preventing a bad key.
++ Thumbnail size has is set in a define
++ Changed logic with oversize. Instead of forbidding use of an
+  oversized image, hitting cancel will use the graphic anyway.
++ Updated : conf/config.php, javascript/pick_image/head.js
+
+19 April 2007
++ Added two stand-alone functions to check whether an image or
+  document is allowed. allowImageType & allowDocumentType
+
+13 April 2007
++ Added missing manager/pick.tpl file to update.
+
+12 April 2007
++ Fixed admin links in admin templates
++ Updated files: templates/file_list.tpl, templates/image_grid.tpl
++ Refactored popup height when viewing images.
+
+11 April 2007
++ Added filecabinet_pins table to install
++ Reduced all permissions to just folders
++ Added ability to pin folders to pages.
++ Added extra security checks
++ Users must now have File Cabinet permissions to use image manager
++ Added the clip image ability.
++ Added ability to limit files listed in pinned folders.
++ Unpin not finished.
++ Folder listing now show public/private status
++ Updated files: in templates/
+                 file_list.tpl, folder_list.tpl, image_grid.tpl,
+                 javascript.tpl, pin_folder.tpl, pinned.tpl,
+                 plain.tpl, settings.tpl, style.css
+
+
+4 April 2007
++ Added German files (which will need updating)
++ Updated to new language format.
+
+2 April 2007
++ Completely rewrote file cabinet.
++ Folders used as file containers
++ Image manager crops and resizes images to fit specifications.
+
++ Updated files : conf/config.php, conf/error.php, conf/icons.php,
+                  img/icons/audio.png, img/icons/document.png,
+                  img/icons/flash_icon.png, img/icons/spreadsheet.png,
+                  img/icons/tar.png
+                  javascript/pick_image/head.js,
+                  javascript/pick_image/scripts.js
+                  templates/document_edit.tpl
+                  templates/image_edit.tpl
+                  templates/settings.tpl
+                  templates/style.css
+                  templates/view.tpl
+
+
++ New files :     img/folder.png, img/folder.svg,
+                  javascript/folder_contents/head.js
+                  javascript/refresh_manager/head.js
+                  templates/edit_folder.tpl
+                  templates/file_list.tpl
+                  templates/folder_list.tpl
+                  templates/image_folders.tpl
+                  templates/image_grid.tpl
+                  templates/image.xml
+                  templates/javascript.tpl
+                  templates/plain.tpl
+
++ Deleted files   class/Cabinet_Action.php,
+                  javascript/post_file/body.js,
+                  templates/cookie_directory.tpl,
+                  templates/documentList.tpl, templates/edit.tpl,
+                  templates/imageList.tpl
+
+
+5 March 2007
++ Changed control panel icon
+
+Version 0.3.1
+---------------
+22 February 2007
++ Added attempt to load gd lib if not preloaded.
+
+21 February 2007
++ Removed test function call.
++ Added "loadDimensions" function to image class
++ Added a gd lib check to image manager. Uses the nogd.png image for a
+  thumbnail if fails.
++ Updated files: img/nogd.png
+
+19 February 2007
++ Reduced translate calls
+
+16 February 2007
++ Added more translate functions
++ Wrote update script
+
+14 February 2007
++ Removed references from object constructors
++ Added missing comment lines
++ Added translate statements
++ Added system upload memory check. Overrides site setting in form.
+
+1 February 2007
++ Fixed base directory uploads
++ Document was changing the object id to null when failing to load the
+  object. Changed it to a zero.
++ Added more directory error checks.
++ Image manager will try and match the current module to its directory.
++ New error message for bad directory choice
+
+31 January 2007
++ Increased file name size in database.
++ Added image directory selection to pick image menu
++ Choosing an image directory only shows images from that directory
++ Removed choice of image directory root. Will always be images/
++ Fixed root document directory. Now actually puts files in said
+  directory.
++ Upload windows choose the default directory better
++ Removed [default] tag from directory listing
+
+16 January 2007
++ Fixed bug in image manager. Was ignoring width and height upload
+  restrictions.
++ Lowercased bools
++ Changed 'x' to 'by' in error message.
+
+RC3 and under
+----------------------------------------------------------------------
+2 October 2006
++ Fixed description table column
++ Image error now prints proper error
++ Fixed image manager not properly updating hidden input
+
+27 September 2006
++ Updated filecabinet to make description column null
++ Added a file existence check on document download
+
+26 July 2006
++ Fixed incorrect naming of define
