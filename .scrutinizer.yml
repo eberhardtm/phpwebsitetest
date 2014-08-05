@@ -1,8 +1,13 @@
 # .scrutinizer.yml
 
 build:
-environment:
-php: '5.4.28'
+    environment:
+        php: 
+            version: 5.4.28
+
+filter:
+    excluded_paths:
+        - tests/*
 
 checks:
 php:
