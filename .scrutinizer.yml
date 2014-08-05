@@ -57,6 +57,9 @@ checks:
         no_unnecessary_final_modifier: true
         spacing_around_conditional_operators: true
 
+tools:
+    php_mess_detector: false
+
 filter:
     excluded_paths:
         - lib/*
