@@ -57,6 +57,7 @@ checks:
         no_unnecessary_final_modifier: true
         spacing_around_conditional_operators: true
 
+
 filter:
     excluded_paths:
         - lib/*
