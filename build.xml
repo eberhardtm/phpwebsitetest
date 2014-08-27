@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="phpwebsite" default="build">
+<project name="phpws-testsite" default="build">
     <property environment="env" />
 
     <!-- The current set of directories containing PHP code is /class,
@@ -154,7 +154,7 @@
 
     <target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
         <exec executable="phpunit" failonerror="true">
-            <arg value="-c" /><arg value="${basedir}/phpunit-phpwebsite.xml" />
+            <arg value="-c" /><arg value="${basedir}/phpunit-phpws-testsite.xml" />
         </exec>
     </target>
 

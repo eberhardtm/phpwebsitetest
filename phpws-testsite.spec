@@ -1,7 +1,7 @@
-%define name phpwebsite
-%define install_dir /var/www/phpwebsite
+%define name phpws-testsite
+%define install_dir /var/www/html/testsite
 
-Summary:   phpWebSite Content Management System
+Summary:   phpWebSite Content Management System test site
 Name:      %{name}
 Version:   %{version}
 Release:   %{release}
@@ -10,7 +10,7 @@ Group:     Development/PHP
 URL:       http://phpwebsite.appstate.edu
 Source:    %{name}-%{version}-%{release}.tar.bz2
 Requires:  php >= 5.0.0, php-gd >= 5.0.0
-Prefix:    /var/www/phpwebsite
+Prefix:    /var/www/html/testsite
 BuildArch: noarch
 
 %description
