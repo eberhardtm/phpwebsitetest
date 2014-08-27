@@ -168,7 +168,8 @@
     </target>
 
     <target name="tarball" depends="build" description="Create a Tarball">
-        <tar destfile="${basedir}/build/bin/${project.name}-${project.version}-${project-release}.tar.bz2" compression="bzip2">
+  <!--      <tar destfile="${basedir}/build/bin/${project.name}-${project.version}-${project-release}.tar.bz2" compression="bzip2"> -->
+        <tar destfile="${basedir}/build/bin/${project.name}.tar.bz2" compression="bzip2">
             <tarfileset dir="${basedir}" prefix="${project.name}-${project.version}-${project.release}/">
                 <exclude name=".git/**" />
                 <exclude name=".gitignore" />
